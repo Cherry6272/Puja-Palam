@@ -26,6 +26,16 @@
       "static/chunks/main-app.js",
       "static/chunks/app/rituals/page.js"
     ],
+    "/planner/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/planner/page.js"
+    ],
+    "/rituals/[slug]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/rituals/[slug]/page.js"
+    ],
     "/samagri/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -35,6 +45,16 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/puja-kits/page.js"
+    ],
+    "/build-your-kit/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/build-your-kit/page.js"
+    ],
+    "/search/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/search/page.js"
     ]
   }
 }

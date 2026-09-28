@@ -1,6 +1,7 @@
 import { Ritual } from '@/types';
+import { MORE_RITUALS } from './more-rituals';
 
-export const RITUALS_DATA: Ritual[] = [
+const BASE_RITUALS: Ritual[] = [
   {
     id: 'satyanarayana-swamy-puja',
     slug: 'satyanarayana-puja',
@@ -939,3 +940,5 @@ export const RITUALS_DATA: Ritual[] = [
     substitutions: [],
   },
 ];
+
+export const RITUALS_DATA: Ritual[] = [...BASE_RITUALS, ...MORE_RITUALS];

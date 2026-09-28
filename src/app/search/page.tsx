@@ -4,6 +4,7 @@ import React, { useState, useMemo, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { RITUALS_DATA } from '@/data/rituals';
 import { SAMAGRI_PRODUCTS } from '@/data/products';
+import { FESTIVALS_DATA } from '@/data/festivals';
 import { RitualCard } from '@/components/store/RitualCard';
 import { ProductCard } from '@/components/store/ProductCard';
 import { Search, Compass, Package, ShoppingBag, ArrowRight, Sparkles, X } from 'lucide-react';
@@ -46,10 +47,18 @@ function SearchPageContent() {
       return matchName || matchCat || matchRel || matchItems || matchCamphor;
     });
 
+    const matchedFestivals = FESTIVALS_DATA.filter((f) => {
+      const matchName = f.name.toLowerCase().includes(q);
+      const matchTag = f.tagline.toLowerCase().includes(q);
+      const matchDesc = f.description.toLowerCase().includes(q);
+      return matchName || matchTag || matchDesc;
+    });
+
     return {
       rituals: matchedRituals,
       products: matchedProducts,
-      totalCount: matchedRituals.length + matchedProducts.length,
+      festivals: matchedFestivals,
+      totalCount: matchedRituals.length + matchedProducts.length + matchedFestivals.length,
     };
   }, [initialQuery]);
 
@@ -161,6 +170,30 @@ function SearchPageContent() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                   {results.rituals.map((r) => (
                     <RitualCard key={r.id} ritual={r} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Priority 1.5: Festival Matches */}
+            {results.festivals.length > 0 && (
+              <div className="space-y-4 pt-4 border-t border-sandalwood-200">
+                <div className="flex items-center space-x-2">
+                  <Sparkles className="w-4 h-4 text-brass-600" />
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-brass-800">
+                    Festivals ({results.festivals.length})
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {results.festivals.map((f) => (
+                    <div key={f.id} className="bg-white rounded-xl border border-sandalwood-200 p-4 flex items-center space-x-4 shadow-sm">
+                       <img src={f.heroImage} alt={f.name} className="w-16 h-16 rounded-lg object-cover" />
+                       <div>
+                         <Link href={`/festivals/${f.slug}`} className="font-bold text-temple-900 hover:text-brass-600 transition-colors">{f.name}</Link>
+                         <p className="text-xs text-temple-600 line-clamp-2 mt-1">{f.tagline}</p>
+                       </div>
+                    </div>
                   ))}
                 </div>
               </div>

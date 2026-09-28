@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { adminAuth } from '@/lib/adminAuth';
+import { loginAdmin } from '@/app/actions/auth';
 import { ShieldCheck, Flame, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
@@ -14,26 +14,21 @@ export default function AdminLoginPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // If already logged in, redirect to /admin
-    if (adminAuth.isAuthenticated()) {
-      router.replace('/admin');
-    }
-  }, [router]);
+    // Middleware handles redirection if already authenticated
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
-    setTimeout(() => {
-      const res = adminAuth.login(email, password);
-      if (res.success) {
-        router.replace('/admin');
-      } else {
-        setError(res.error || 'Authentication failed. Please verify credentials.');
-        setIsLoading(false);
-      }
-    }, 400);
+    const res = await loginAdmin(password);
+    if (res.success) {
+      router.replace('/admin');
+    } else {
+      setError(res.error || 'Authentication failed. Please verify credentials.');
+      setIsLoading(false);
+    }
   };
 
   return (

@@ -345,7 +345,7 @@ export default function CheckoutPage() {
             className="w-full py-4 rounded-xl bg-temple-900 hover:bg-temple-800 disabled:bg-temple-600 text-sandalwood-50 font-bold text-xs flex items-center justify-center space-x-2 shadow-temple transition-all"
           >
             <ShieldCheck className="w-4 h-4 text-brass-400" />
-            <span>{isSubmitting ? 'Validating Order...' : 'Place Puja-Ready Order'}</span>
+            <span>{isSubmitting ? 'Submitting...' : 'Submit Order Request'}</span>
             {!isSubmitting && <ArrowRight className="w-4 h-4" />}
           </button>
 

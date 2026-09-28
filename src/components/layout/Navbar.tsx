@@ -48,7 +48,7 @@ export const Navbar: React.FC = () => {
             </span>
             <span className="hidden sm:inline text-temple-400">|</span>
             <span className="hidden sm:inline text-sandalwood-300">
-              Next-Day Consecrated Delivery across Bengaluru, Chennai & Hyderabad
+              Prepared with care for your ritual
             </span>
           </div>
 
@@ -95,7 +95,7 @@ export const Navbar: React.FC = () => {
             </Link>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center space-x-6 text-sm font-medium text-temple-700">
+            <nav className="hidden lg:flex items-center space-x-5 text-sm font-medium text-temple-700">
               <Link
                 href="/plan-your-puja"
                 className="flex items-center space-x-1.5 hover:text-brass-600 transition-colors font-semibold text-temple-900"
@@ -134,10 +134,10 @@ export const Navbar: React.FC = () => {
                 Build Your Kit
               </Link>
               <Link
-                href="/how-it-works"
-                className="hover:text-brass-600 transition-colors text-temple-600"
+                href="/search"
+                className="hover:text-brass-600 transition-colors"
               >
-                How It Works
+                Search
               </Link>
             </nav>
 
@@ -232,11 +232,11 @@ export const Navbar: React.FC = () => {
               Puja Samagri
             </Link>
             <Link
-              href="/how-it-works"
+              href="/search"
               onClick={() => setIsMobileMenuOpen(false)}
               className="block p-2 text-temple-800 font-medium hover:bg-sandalwood-100 rounded"
             >
-              How It Works
+              Search
             </Link>
             <Link
               href="/cart"
@@ -246,19 +246,27 @@ export const Navbar: React.FC = () => {
               <span>View Cart</span>
               <span className="text-xs bg-temple-900 text-white px-2 py-0.5 rounded-full">{totalItemsCount}</span>
             </Link>
+            <div className="h-px bg-sandalwood-200 my-2" />
+            <Link
+              href="/how-it-works"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block p-2 text-temple-600 font-medium hover:bg-sandalwood-100 rounded text-sm"
+            >
+              How It Works
+            </Link>
             <Link
               href="/about"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block p-2 text-temple-800 font-medium hover:bg-sandalwood-100 rounded"
+              className="block p-2 text-temple-600 font-medium hover:bg-sandalwood-100 rounded text-sm"
             >
-              About Puja Karyam
+              About
             </Link>
             <Link
               href="/contact"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block p-2 text-temple-800 font-medium hover:bg-sandalwood-100 rounded"
+              className="block p-2 text-temple-600 font-medium hover:bg-sandalwood-100 rounded text-sm"
             >
-              Contact Support &amp; Hubs
+              Contact / Support
             </Link>
             <div className="pt-2">
               <button

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { adminAuth } from '@/lib/adminAuth';
+import { logoutAdmin } from '@/app/actions/auth';
 import { 
   Flame, 
   LayoutDashboard, 
@@ -32,15 +32,12 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   useEffect(() => {
-    if (!adminAuth.isAuthenticated()) {
-      router.replace('/admin/login');
-    } else {
-      setIsAuthorized(true);
-    }
-  }, [router]);
+    // Middleware handles route protection, so we just set authorized to true.
+    setIsAuthorized(true);
+  }, []);
 
-  const handleLogout = () => {
-    adminAuth.logout();
+  const handleLogout = async () => {
+    await logoutAdmin();
     router.replace('/admin/login');
   };
 

@@ -1,4 +1,4 @@
-// File: C:\Users\Admin\Documents\Puja-New\src\app\rituals\page.tsx
+// File: C:\Users\Admin\Documents\GitHub\Puja-Palam\src\app\rituals\page.tsx
 import * as entry from '../../../../src/app/rituals/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
