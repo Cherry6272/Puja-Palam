@@ -1,0 +1,7 @@
+{
+  "/rituals/page": "app/rituals/page.js",
+  "/plan-your-puja/page": "app/plan-your-puja/page.js",
+  "/page": "app/page.js",
+  "/samagri/page": "app/samagri/page.js",
+  "/puja-kits/page": "app/puja-kits/page.js"
+}
