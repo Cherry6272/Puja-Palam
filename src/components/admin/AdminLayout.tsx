@@ -31,8 +31,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const handleLogout = async () => {
-    // TEMPORARY AUDIT MODE: Disable logout
-    alert("Authentication is completely disabled for the current audit mode. You cannot log out.");
+    await logoutAdmin();
+    router.replace('/admin/login');
   };
 
   const navLinks = [

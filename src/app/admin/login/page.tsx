@@ -14,14 +14,21 @@ export default function AdminLoginPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // TEMPORARY AUDIT MODE: Bypass login page completely
-    router.replace('/admin');
-  }, [router]);
+    // Middleware handles redirection if already authenticated
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TEMPORARY AUDIT MODE
-    router.replace('/admin');
+    setError('');
+    setIsLoading(true);
+
+    const res = await loginAdmin(password);
+    if (res.success) {
+      router.replace('/admin');
+    } else {
+      setError(res.error || 'Authentication failed. Please verify credentials.');
+      setIsLoading(false);
+    }
   };
 
   return (

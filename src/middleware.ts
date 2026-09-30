@@ -9,12 +9,13 @@ export function middleware(request: NextRequest) {
     const session = request.cookies.get('pk_admin_session')?.value;
 
     // TEMPORARY AUDIT MODE: Bypass authentication gate
-    // Uncomment the block below to restore authentication after the audit.
-    /*
+    if (process.env.ADMIN_AUDIT_MODE === 'true') {
+      return NextResponse.next();
+    }
+
     if (!session) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
-    */
   }
 
   return NextResponse.next();
