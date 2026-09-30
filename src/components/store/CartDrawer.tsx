@@ -15,6 +15,7 @@ import {
   Truck
 } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export const CartDrawer: React.FC = () => {
   const { 
@@ -31,8 +32,14 @@ export const CartDrawer: React.FC = () => {
     clearCart 
   } = useCart();
 
+  const pathname = usePathname();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [orderConfirmed, setOrderConfirmed] = useState(false);
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   const [shippingAddress, setShippingAddress] = useState({
     name: 'Suresh Raghavan',
     phone: '+91 98450 12345',

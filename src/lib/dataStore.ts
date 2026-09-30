@@ -99,6 +99,8 @@ export const dataStore = {
     localStorage.setItem(STORAGE_KEYS.RITUALS, JSON.stringify(rituals));
   },
 
+
+
   // FESTIVALS
   getFestivals(): Festival[] {
     if (!isClient) return FESTIVALS_DATA;

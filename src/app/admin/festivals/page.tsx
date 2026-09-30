@@ -151,6 +151,29 @@ export default function AdminFestivalsPage() {
                   />
                 </div>
 
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block font-bold text-temple-700 mb-1">Hero Image URL</label>
+                    <input
+                      type="text"
+                      required
+                      value={editingFestival.heroImage}
+                      onChange={(e) => setEditingFestival({ ...editingFestival, heroImage: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-sandalwood-300 text-temple-900"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-temple-700 mb-1">Gallery URLs (comma separated)</label>
+                    <input
+                      type="text"
+                      value={editingFestival.gallery?.join(', ') || ''}
+                      onChange={(e) => setEditingFestival({ ...editingFestival, gallery: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                      className="w-full p-2.5 rounded-xl border border-sandalwood-300 text-temple-900"
+                    />
+                  </div>
+                </div>
+
                 <div className="flex items-center justify-end space-x-2 pt-3 border-t border-sandalwood-200">
                   <button
                     type="button"

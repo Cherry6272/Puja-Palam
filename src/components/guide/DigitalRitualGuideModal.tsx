@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { RITUALS_DATA } from '@/data/rituals';
+import { useDataStore } from '@/hooks/useDataStore';
 import { 
   Volume2, 
   VolumeX, 
@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 
 export const DigitalRitualGuideModal: React.FC = () => {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+
   const [selectedRitualId, setSelectedRitualId] = useState(RITUALS_DATA[0].id);
   const [activeTab, setActiveTab] = useState<'timeline' | 'checklist' | 'audio'>('timeline');
   const [selectedLang, setSelectedLang] = useState<'English' | 'Kannada' | 'Tamil' | 'Telugu' | 'Hindi'>('English');

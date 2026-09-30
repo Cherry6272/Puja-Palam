@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useDataStore } from '@/hooks/useDataStore';
 import { notFound, useParams } from 'next/navigation';
-import { RITUALS_DATA } from '@/data/rituals';
 import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
 import { 
@@ -21,6 +21,8 @@ import {
 } from 'lucide-react';
 
 export default function RitualDetailPage() {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+
   const params = useParams();
   const slug = params.slug as string;
   const { addCustomizedKit } = useCart();
@@ -139,7 +141,7 @@ export default function RitualDetailPage() {
           <div className="absolute inset-0 bg-gradient-to-t from-temple-950 via-transparent to-transparent" />
           <div className="absolute bottom-4 left-4 right-4 text-sandalwood-100 flex items-center justify-between text-xs">
             <span className="bg-temple-900/80 px-3 py-1 rounded-full border border-brass-700/50">
-              Verified Vedic Canon
+              Commonly Used Rituals
             </span>
             <span className="text-brass-300 font-semibold">
               {ritual.baseRequiredItems.length} Required Items

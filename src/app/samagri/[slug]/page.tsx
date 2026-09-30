@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useDataStore } from '@/hooks/useDataStore';
 import { notFound, useParams, useRouter } from 'next/navigation';
-import { SAMAGRI_PRODUCTS } from '@/data/products';
-import { RITUALS_DATA } from '@/data/rituals';
 import { useCart } from '@/context/CartContext';
 import { ProductCard } from '@/components/store/ProductCard';
 import Link from 'next/link';
@@ -20,6 +19,8 @@ import {
 } from 'lucide-react';
 
 export default function ProductDetailPage() {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+
   const params = useParams();
   const slug = params.slug as string;
   const router = useRouter();

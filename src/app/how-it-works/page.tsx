@@ -24,7 +24,7 @@ export default function HowItWorksPage() {
       number: '01',
       title: 'Consult the Ritual Knowledge Graph',
       subtitle: 'Canonical Vedic intelligence without guesswork',
-      desc: 'Whether performing Griha Pravesh, Varalakshmi Vrata, or Satyanarayana Swamy Puja, select your ceremony and regional tradition (Karnataka Smartha, Tamil Iyer, Telugu Vaidiki, Kerala Tantric). Puja Karyam instantly maps the exact list of 25+ sacred items prescribed by tradition.',
+      desc: 'Whether performing Griha Pravesh, Varalakshmi Vrata, or Satyanarayana Swamy Puja, select your ceremony and regional tradition (Karnataka Smartha, Tamil Iyer, Telugu Vaidiki, Kerala Tantric). Samptrapthi instantly maps the exact list of 25+ sacred items prescribed by tradition.',
       features: [
         'Precise item quantities tailored to devotee headcount',
         'Specific regional leaves, powders, and vessel requirements',
@@ -46,7 +46,7 @@ export default function HowItWorksPage() {
       number: '03',
       title: '4-Box Ritual-Ready Sequenced Packing',
       subtitle: 'Items organized chronologically as the priest requests them',
-      desc: 'Instead of an unorganized carton of mixed bags, Puja Karyam packs every order into four distinct, sequentially labeled boxes matching the natural procedural stages of the puja.',
+      desc: 'Instead of an unorganized carton of mixed bags, Samptrapthi packs every order into four distinct, sequentially labeled boxes matching the natural procedural stages of the puja.',
       features: [
         'Box 01: Preparation (Shuddhi, Red Silk Peeta Asana, Ganga Jal, Lamps, Wicks)',
         'Box 02: Kalasha (Brass Kalasha, Crowned Coconut, Mango leaves, Sacred Powders, Akshata)',
@@ -57,7 +57,7 @@ export default function HowItWorksPage() {
     {
       number: '04',
       title: 'Consecrated JIT Delivery & Digital QR Guide',
-      subtitle: 'Fresh florals packed at 5:30 AM with audio mantra companion',
+      subtitle: 'Fresh flowers available where supported, with audio mantra companion',
       desc: 'Dry consumables and brassware are sealed in advance from our regional hubs in Bengaluru, Chennai, and Hyderabad. Box 03 fresh floral garlands are strung and packed hours before your auspicious morning muhurtha. Scan the box QR code for step-by-step setup guidance and authentic Sanskrit mantra audio.',
       features: [
         'Guaranteed delivery before your scheduled muhurtham',
@@ -73,10 +73,10 @@ export default function HowItWorksPage() {
       <div className="text-center max-w-3xl mx-auto space-y-4">
         <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-brass-100 border border-brass-300/80 text-brass-800 text-xs font-bold uppercase tracking-widest">
           <Sparkles className="w-3.5 h-3.5 text-brass-600" />
-          <span>The Puja Karyam Standard</span>
+          <span>The Samptrapthi Standard</span>
         </div>
         <h1 className="font-serif-title text-3xl sm:text-5xl font-bold text-temple-900 tracking-tight">
-          How Puja Karyam Works
+          How Samptrapthi Works
         </h1>
         <p className="text-sm sm:text-base text-temple-600 leading-relaxed">
           From the first item to the final offering, we transform ritual procurement into a modern, serene experience—rooted in cultural reverence, single-origin purity, and logistical precision.
@@ -137,7 +137,7 @@ export default function HowItWorksPage() {
             Tri-City Dedicated Regional Hubs
           </h2>
           <p className="text-xs sm:text-sm text-sandalwood-300">
-            Consecrated materials are stored under climate-controlled mandir conditions and dispatched directly across Karnataka, Tamil Nadu, and Telangana/AP.
+            Curated ritual materials are stored under climate-controlled mandir conditions and dispatched directly across Karnataka, Tamil Nadu, and Telangana/AP.
           </p>
         </div>
 

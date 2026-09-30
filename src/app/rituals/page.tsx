@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { RITUALS_DATA } from '@/data/rituals';
+import { useDataStore } from '@/hooks/useDataStore';
 import { RitualCard } from '@/components/store/RitualCard';
 import { IntentSearchBar } from '@/components/store/IntentSearchBar';
 import { RitualCategory } from '@/types';
@@ -9,6 +9,8 @@ import { Compass, Sparkles, Filter, Layers, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function RitualsIndexPage() {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   const categories = ['All', 'Vrata', 'Samskara', 'Griha', 'Festival'];

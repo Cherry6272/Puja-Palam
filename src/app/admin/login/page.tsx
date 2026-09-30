@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { loginAdmin } from '@/app/actions/auth';
-import { ShieldCheck, Flame, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
+import { ShieldCheck, Flower2, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminLoginPage() {
@@ -38,10 +38,10 @@ export default function AdminLoginPage() {
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center z-10 space-y-3">
         <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brass-300 via-brass-500 to-brass-700 flex items-center justify-center mx-auto shadow-brass">
-          <Flame className="w-7 h-7 text-temple-950" />
+          <Flower2 className="w-7 h-7 text-temple-950" />
         </div>
         <h2 className="font-serif-title text-3xl font-bold tracking-wider text-sandalwood-50">
-          PUJA KARYAM
+          SAMPTRAPTHI
         </h2>
         <p className="text-xs uppercase tracking-widest text-brass-400 font-semibold">
           Operations &amp; Ritual Control Portal

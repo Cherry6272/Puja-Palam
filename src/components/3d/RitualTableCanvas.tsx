@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useDataStore } from '@/hooks/useDataStore';
 import * as THREE from 'three';
-import { RITUALS_DATA } from '@/data/rituals';
 import { 
   Sparkles, 
   RotateCcw, 
@@ -28,6 +28,8 @@ interface ActiveObjectDetail {
 }
 
 export const RitualTableCanvas: React.FC = () => {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+
   const mountRef = useRef<HTMLDivElement>(null);
   const { addProduct } = useCart();
   const [activeRitualId, setActiveRitualId] = useState('satyanarayana-swamy-puja');

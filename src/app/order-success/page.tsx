@@ -57,7 +57,7 @@ function OrderSuccessContent() {
             Consecrated Procurement Confirmed
           </span>
           <h1 className="font-serif-title text-3xl sm:text-4xl font-bold text-temple-900">
-            Your Puja Karyam is Being Prepared
+            Your Samptrapthi is Being Prepared
           </h1>
           <p className="text-xs sm:text-sm text-temple-600 max-w-lg mx-auto leading-relaxed pt-1">
             Order <strong>#{orderId}</strong> has been received and routed to our nearest regional fulfillment center. All materials will be packed in 4-box ritual sequence.

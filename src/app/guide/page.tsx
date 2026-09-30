@@ -18,7 +18,7 @@ export default function GuidePage() {
           Digital Ritual Guide & Unboxing Sequence
         </h1>
         <p className="text-xs sm:text-sm text-temple-600 max-w-2xl mx-auto leading-relaxed">
-          Every Puja Karyam kit comes stamped with a unique batch QR code. Scanning it opens your ceremony’s preparation timeline, box unpacking steps, and audio pronunciation guides.
+          Every Samptrapthi kit comes stamped with a unique batch QR code. Scanning it opens your ceremony’s preparation timeline, box unpacking steps, and audio pronunciation guides.
         </p>
       </div>
 

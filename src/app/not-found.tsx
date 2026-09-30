@@ -2,14 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Compass, ShoppingBag, Flame, ArrowLeft, Home } from 'lucide-react';
+import { Compass, ShoppingBag, Flower2, ArrowLeft, Home } from 'lucide-react';
 
 export default function NotFound() {
   return (
     <div className="min-h-[75vh] flex items-center justify-center px-4 py-16">
       <div className="max-w-lg w-full bg-white rounded-3xl p-8 sm:p-12 border border-sandalwood-200 shadow-temple text-center space-y-6">
         <div className="w-16 h-16 rounded-full bg-brass-100 flex items-center justify-center mx-auto text-brass-700 shadow-xs">
-          <Flame className="w-8 h-8 text-amber-600 animate-flame" />
+          <Flower2 className="w-8 h-8 text-amber-600 animate-flame" />
         </div>
 
         <div className="space-y-2">

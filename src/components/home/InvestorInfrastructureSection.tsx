@@ -34,7 +34,7 @@ export const InvestorInfrastructureSection: React.FC = () => {
             From Samagri to Ritual Infrastructure
           </h2>
           <p className="text-sm text-sandalwood-300 leading-relaxed">
-            Puja Karyam is not another e-commerce storefront. We are building the proprietary algorithmic and logistical infrastructure that powers traditional rituals globally.
+            Samptrapthi is not another e-commerce storefront. We are building the proprietary algorithmic and logistical infrastructure that powers traditional rituals globally.
           </p>
         </div>
 

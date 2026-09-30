@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { RITUALS_DATA } from '@/data/rituals';
+import { useDataStore } from '@/hooks/useDataStore';
 import { useCart } from '@/context/CartContext';
 import { 
   Sparkles, 
@@ -35,6 +35,7 @@ interface ParsedResult {
 }
 
 export const AskPujaKaryamModal: React.FC<Props> = ({ isOpen, onClose }) => {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
   const router = useRouter();
   const { addCustomizedKit } = useCart();
   const [query, setQuery] = useState('');
@@ -173,7 +174,7 @@ export const AskPujaKaryamModal: React.FC<Props> = ({ isOpen, onClose }) => {
             </div>
             <div>
               <h3 className="font-serif-title text-lg font-bold text-sandalwood-50">
-                Ask Puja Karyam
+                Ask Samptrapthi
               </h3>
               <p className="text-xs text-brass-300">
                 Grounded Ritual Intelligence • Zero Hallucinations
@@ -344,7 +345,7 @@ export const AskPujaKaryamModal: React.FC<Props> = ({ isOpen, onClose }) => {
           <div className="bg-sandalwood-100/70 rounded-lg p-3 text-[11px] text-temple-600 flex items-start space-x-2">
             <AlertCircle className="w-4 h-4 text-brass-600 flex-shrink-0 mt-0.5" />
             <p>
-              Puja Karyam queries are grounded directly into verified canonical texts (Shukla Yajur Veda, Smriti Kaustubha, Bodhayana Sutra). We never generate arbitrary spiritual claims.
+              Samptrapthi queries are grounded directly into verified canonical texts (Shukla Yajur Veda, Smriti Kaustubha, Bodhayana Sutra). We never generate arbitrary spiritual claims.
             </p>
           </div>
         </div>

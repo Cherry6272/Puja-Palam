@@ -111,7 +111,7 @@ export const RitualBoxPackagingView: React.FC = () => {
             Ritual-Ready Sequenced Packaging
           </h2>
           <p className="text-sm text-temple-600 leading-relaxed">
-            Instead of dumping 30 random items into a cardboard box, Puja Karyam organizes every ritual into four chronologically sequenced boxes with QR guide integration.
+            Instead of dumping 30 random items into a cardboard box, Samptrapthi organizes every ritual into four chronologically sequenced boxes with QR guide integration.
           </p>
         </div>
 
@@ -207,7 +207,7 @@ export const RitualBoxPackagingView: React.FC = () => {
               <div className="lg:col-span-5 bg-gradient-to-br from-temple-900 via-temple-800 to-temple-900 rounded-2xl p-6 text-sandalwood-100 border border-brass-600/30 flex flex-col justify-between aspect-square sm:aspect-auto sm:h-80 shadow-2xl relative overflow-hidden">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold tracking-widest uppercase text-brass-400">
-                    PUJA KARYAM BOX 0{box.boxNumber}
+                    SAMPTRAPTHI BOX 0{box.boxNumber}
                   </span>
                   <div className="p-2 rounded-lg bg-white/10 backdrop-blur-md">
                     <QrCode className="w-6 h-6 text-brass-300" />
@@ -225,7 +225,7 @@ export const RitualBoxPackagingView: React.FC = () => {
                 </div>
 
                 <div className="pt-3 border-t border-brass-800 text-[11px] text-sandalwood-300 flex items-center justify-between">
-                  <span>Batch Consecrated: Yes</span>
+                  <span>Curated Selection</span>
                   <span>Fulfillment: Sequence Checked</span>
                 </div>
               </div>

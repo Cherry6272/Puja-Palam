@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { 
   Sparkles, 
@@ -12,7 +13,7 @@ import {
   Compass, 
   ShieldCheck, 
   QrCode,
-  Flame
+  Flower2
 } from 'lucide-react';
 import { AskPujaKaryamModal } from '@/components/ai/AskPujaKaryamModal';
 
@@ -35,6 +36,11 @@ export const Navbar: React.FC = () => {
     { id: 'kerala-tantric', label: 'Kerala (കേരളം)' },
     { id: 'pan-vedic', label: 'Pan-Vedic (North / Central)' },
   ];
+  const pathname = usePathname();
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <>
@@ -43,7 +49,7 @@ export const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3 truncate">
             <span className="inline-flex items-center text-brass-400 font-medium">
-              <Flame className="w-3.5 h-3.5 mr-1 text-amber-500 animate-flame" />
+              <Flower2 className="w-3.5 h-3.5 mr-1 text-amber-500 animate-flame" />
               Shubha Muhurtham
             </span>
             <span className="hidden sm:inline text-temple-400">|</span>
@@ -80,12 +86,12 @@ export const Navbar: React.FC = () => {
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-3 group">
               <div className="w-11 h-11 rounded-full bg-gradient-to-br from-brass-300 via-brass-500 to-brass-700 flex items-center justify-center shadow-brass transition-transform duration-300 group-hover:scale-105">
-                <Flame className="w-6 h-6 text-temple-900 drop-shadow" />
+                <Flower2 className="w-6 h-6 text-temple-900 drop-shadow" />
               </div>
               <div>
                 <div className="flex items-center space-x-2">
                   <span className="font-serif-title text-2xl font-bold tracking-wider text-temple-900 group-hover:text-brass-700 transition-colors">
-                    PUJA KARYAM
+                    SAMPTRAPTHI
                   </span>
                 </div>
                 <p className="text-[10px] tracking-widest uppercase font-semibold text-brass-700 -mt-1">
@@ -143,14 +149,14 @@ export const Navbar: React.FC = () => {
 
             {/* Right CTAs */}
             <div className="flex items-center space-x-3">
-              {/* Ask Puja Karyam AI Button */}
+              {/* Ask Samptrapthi AI Button */}
               <button
                 type="button"
                 onClick={() => setIsAiModalOpen(true)}
                 className="hidden sm:inline-flex items-center space-x-2 px-3.5 py-2 rounded-full border border-brass-400 bg-brass-50/60 hover:bg-brass-100/80 text-temple-800 text-xs font-semibold tracking-wide transition-all duration-200 shadow-sm hover:shadow-brass"
               >
                 <Sparkles className="w-4 h-4 text-brass-600 animate-pulse" />
-                <span>Ask Puja Karyam</span>
+                <span>Ask Samptrapthi</span>
               </button>
 
               {/* Cart Drawer Trigger */}
@@ -278,7 +284,7 @@ export const Navbar: React.FC = () => {
                 className="w-full flex items-center justify-center space-x-2 py-2.5 rounded-lg bg-brass-500 text-temple-900 font-bold text-sm shadow-brass"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>Ask Puja Karyam AI</span>
+                <span>Ask Samptrapthi AI</span>
               </button>
             </div>
           </div>

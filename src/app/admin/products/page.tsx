@@ -87,7 +87,8 @@ export default function AdminProductsPage() {
       shelfLife: '24 Months',
       storage: 'Airtight container',
       usedInRituals: ['satyanarayana-puja', 'ganapati-puja'],
-      image: 'https://images.unsplash.com/photo-1615865417491-9941019fbc00?auto=format&fit=crop&w=600&q=80',
+      image: '/images/products/new-samagri.svg',
+      gallery: [],
       boxSequence: 2,
     };
     setEditingProduct(newProd);
@@ -375,6 +376,28 @@ export default function AdminProductsPage() {
                         <option key={c} value={c}>{c}</option>
                       ))}
                     </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block font-bold text-temple-700 mb-1">Primary Image URL</label>
+                    <input
+                      type="text"
+                      value={editingProduct.image}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-sandalwood-300 text-temple-900"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-temple-700 mb-1">Gallery URLs (comma separated)</label>
+                    <input
+                      type="text"
+                      value={editingProduct.gallery?.join(', ') || ''}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, gallery: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                      className="w-full p-2.5 rounded-xl border border-sandalwood-300 text-temple-900"
+                    />
                   </div>
                 </div>
 

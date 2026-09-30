@@ -29,6 +29,8 @@ export default function AdminRitualsPage() {
   const [newItemBox, setNewItemBox] = useState<1 | 2 | 3 | 4>(2);
   const [newItemEssential, setNewItemEssential] = useState(true);
   const [newItemPrice, setNewItemPrice] = useState(150);
+  const [isEditingRitualDetails, setIsEditingRitualDetails] = useState(false);
+  const [editingRitualObj, setEditingRitualObj] = useState<Ritual | null>(null);
 
   const loadRituals = () => {
     const list = dataStore.getRituals();
@@ -172,9 +174,22 @@ export default function AdminRitualsPage() {
                     </span>
                     <span className="text-xs text-temple-500">Canon: {selectedRitual.deity}</span>
                   </div>
-                  <h2 className="font-serif-title text-2xl font-bold text-temple-900">
-                    {selectedRitual.name}
-                  </h2>
+                  <div className="flex items-center space-x-3">
+                    <h2 className="font-serif-title text-2xl font-bold text-temple-900">
+                      {selectedRitual.name}
+                    </h2>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingRitualObj({ ...selectedRitual });
+                        setIsEditingRitualDetails(true);
+                      }}
+                      className="p-1.5 rounded-lg border border-sandalwood-300 text-temple-600 hover:text-temple-900 hover:bg-sandalwood-50"
+                      title="Edit Ritual Details & Imagery"
+                    >
+                      <Edit3 className="w-4 h-4" />
+                    </button>
+                  </div>
                   <p className="text-xs text-temple-600 leading-relaxed max-w-xl">
                     {selectedRitual.tagline}
                   </p>
@@ -331,6 +346,106 @@ export default function AdminRitualsPage() {
             </div>
           )}
         </div>
+
+        {/* Edit Ritual Details Modal */}
+        {isEditingRitualDetails && editingRitualObj && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-temple-950/70 backdrop-blur-sm">
+            <div className="bg-white rounded-3xl border border-brass-400/50 shadow-2xl p-6 sm:p-8 max-w-xl w-full max-h-[90vh] overflow-y-auto space-y-4 text-xs">
+              <div className="flex items-center justify-between border-b border-sandalwood-200 pb-3">
+                <h3 className="font-serif-title text-xl font-bold text-temple-900">
+                  Edit Ritual Details
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setIsEditingRitualDetails(false)}
+                  className="p-1 rounded text-temple-400 hover:text-temple-900"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                dataStore.updateRitual(editingRitualObj);
+                setSelectedRitual(editingRitualObj);
+                loadRituals();
+                setIsEditingRitualDetails(false);
+              }} className="space-y-4">
+                <div>
+                  <label className="block font-bold text-temple-700 mb-1">Ritual Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingRitualObj.name}
+                    onChange={(e) => setEditingRitualObj({ ...editingRitualObj, name: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-sandalwood-300 text-temple-900 font-semibold"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-temple-700 mb-1">Tagline</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingRitualObj.tagline}
+                    onChange={(e) => setEditingRitualObj({ ...editingRitualObj, tagline: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-sandalwood-300 text-temple-900"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block font-bold text-temple-700 mb-1">Primary Image URL</label>
+                    <input
+                      type="text"
+                      required
+                      value={editingRitualObj.image}
+                      onChange={(e) => setEditingRitualObj({ ...editingRitualObj, image: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-sandalwood-300 text-temple-900"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-temple-700 mb-1">Gallery URLs (comma separated)</label>
+                    <input
+                      type="text"
+                      value={editingRitualObj.gallery?.join(', ') || ''}
+                      onChange={(e) => setEditingRitualObj({ ...editingRitualObj, gallery: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                      className="w-full p-2.5 rounded-xl border border-sandalwood-300 text-temple-900"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-temple-700 mb-1">Active (Published)</label>
+                  <input
+                    type="checkbox"
+                    checked={editingRitualObj.isActive !== false}
+                    onChange={(e) => setEditingRitualObj({ ...editingRitualObj, isActive: e.target.checked })}
+                    className="w-5 h-5 rounded text-brass-600 focus:ring-brass-500"
+                  />
+                </div>
+
+                <div className="flex items-center justify-end space-x-2 pt-3 border-t border-sandalwood-200">
+                  <button
+                    type="button"
+                    onClick={() => setIsEditingRitualDetails(false)}
+                    className="px-4 py-2 rounded-xl border border-sandalwood-300 text-temple-700"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-5 py-2 rounded-xl bg-temple-900 text-sandalwood-50 font-bold shadow-temple flex items-center space-x-1"
+                  >
+                    <Save className="w-3.5 h-3.5 text-brass-400" />
+                    <span>Save Details</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </AdminLayout>
   );

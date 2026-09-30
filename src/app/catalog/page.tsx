@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState, useMemo, Suspense } from 'react';
+import { useDataStore } from '@/hooks/useDataStore';
 import { useSearchParams } from 'next/navigation';
-import { RITUALS_DATA } from '@/data/rituals';
-import { SAMAGRI_PRODUCTS } from '@/data/products';
 import { RitualCard } from '@/components/store/RitualCard';
 import { ProductCard } from '@/components/store/ProductCard';
 import { IntentSearchBar } from '@/components/store/IntentSearchBar';
@@ -12,6 +11,7 @@ import { Filter, Sparkles, Compass, ShoppingBag, Layers } from 'lucide-react';
 import Link from 'next/link';
 
 function CatalogContent() {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
   const searchParams = useSearchParams();
   const initialTab = (searchParams.get('tab') as 'rituals' | 'kits' | 'samagri') || 'rituals';
 

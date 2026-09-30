@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useDataStore } from '@/hooks/useDataStore';
 import Link from 'next/link';
-import { FESTIVALS_DATA } from '@/data/festivals';
 import { SouthIndianRegion } from '@/types';
 import { 
   Calendar, 
@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 
 export default function FestivalsDirectoryPage() {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [selectedSeason, setSelectedSeason] = useState<string>('all');
 

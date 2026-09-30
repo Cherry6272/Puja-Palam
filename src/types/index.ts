@@ -91,6 +91,8 @@ export interface Ritual {
   idealTime: string;
   auspiciousTithi: string;
   image: string;
+  gallery?: string[];
+  isActive?: boolean;
   accentColor: string;
   baseRequiredItems: RitualItem[];
   optionalItems: RitualItem[];
@@ -122,6 +124,7 @@ export interface SamagriProduct {
   rating: number;
   reviewCount: number;
   inStock: boolean;
+  isArchived?: boolean;
   inventoryByHub: {
     blr: number; // Bengaluru
     maa: number; // Chennai
@@ -135,6 +138,7 @@ export interface SamagriProduct {
   storage: string;
   usedInRituals: string[];
   image: string;
+  gallery?: string[];
   boxSequence: 1 | 2 | 3 | 4;
 }
 
@@ -216,6 +220,9 @@ export interface Festival {
   featuredKits: string[]; // kit slugs or tier keys
   essentialProducts: string[]; // product slugs
   heroImage: string;
+  gallery?: string[];
+  isActive?: boolean;
+  isFeatured?: boolean;
   culturalTraditionNotes: FestivalTraditionNote[];
 }
 

@@ -1,14 +1,15 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { RITUALS_DATA } from '@/data/rituals';
-import { SAMAGRI_PRODUCTS } from '@/data/products';
+import { useDataStore } from '@/hooks/useDataStore';
 import { Search, Sparkles, ArrowRight, Package, Compass, X } from 'lucide-react';
 import Link from 'next/link';
 
 import { useRouter } from 'next/navigation';
 
 export const IntentSearchBar: React.FC = () => {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();

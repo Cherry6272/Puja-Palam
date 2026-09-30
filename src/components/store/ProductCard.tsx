@@ -85,7 +85,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             <span>{product.weightOrVolume}</span>
             <span className="text-tulsi-700 font-medium flex items-center space-x-1">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Hub Verified</span>
+              <span>Availability Checked</span>
             </span>
           </div>
         </div>

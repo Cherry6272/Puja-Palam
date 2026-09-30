@@ -104,7 +104,7 @@ export default function CheckoutPage() {
       boxSequenceStatus: {
         box1: 'Scheduled for Assembly',
         box2: 'Scheduled for Assembly',
-        box3: 'Fresh Florals Scheduled for 5:30 AM',
+        box3: 'Fresh Flowers Available Where Supported',
         box4: 'Queued for Aarti Packing',
       },
     };

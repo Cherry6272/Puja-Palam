@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { SAMAGRI_PRODUCTS } from '@/data/products';
+import { useDataStore } from '@/hooks/useDataStore';
 import { ProductCard } from '@/components/store/ProductCard';
 import { IntentSearchBar } from '@/components/store/IntentSearchBar';
 import { ItemCategory } from '@/types';
 import { ShoppingBag, Filter, ArrowUpDown, ShieldCheck } from 'lucide-react';
 
 export default function SamagriPage() {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [sortBy, setSortBy] = useState<'recommended' | 'price-low' | 'price-high'>('recommended');
 

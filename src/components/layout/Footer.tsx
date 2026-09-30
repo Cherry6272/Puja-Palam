@@ -2,9 +2,16 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Flame, ShieldCheck, Heart, MapPin, Sparkles, QrCode } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { Flower2, ShieldCheck, Heart, MapPin, Sparkles, QrCode } from 'lucide-react';
 
 export const Footer: React.FC = () => {
+  const pathname = usePathname();
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   return (
     <footer className="bg-temple-900 text-sandalwood-200 border-t border-brass-800/60 pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,11 +21,11 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center space-x-3 group">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brass-300 via-brass-500 to-brass-700 flex items-center justify-center shadow-brass">
-                <Flame className="w-5 h-5 text-temple-900" />
+                <Flower2 className="w-5 h-5 text-temple-900" />
               </div>
               <div>
                 <span className="font-serif-title text-xl font-bold tracking-wider text-sandalwood-50">
-                  PUJA KARYAM
+                  SAMPTRAPTHI
                 </span>
                 <p className="text-[9px] tracking-widest uppercase font-semibold text-brass-400">
                   Ritual Procurement Platform
@@ -27,17 +34,17 @@ export const Footer: React.FC = () => {
             </Link>
 
             <p className="text-xs text-sandalwood-300 leading-relaxed max-w-sm">
-              From the first item to the final offering, Puja Karyam brings every ritual requirement together — thoughtfully curated, accurately prepared and delivered with ease.
+              From the first item to the final offering, Samptrapthi brings every ritual requirement together — thoughtfully curated, accurately prepared and delivered with ease.
             </p>
 
             <div className="pt-2 flex items-center space-x-3 text-xs text-brass-300">
               <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded bg-temple-800 border border-brass-700/40">
                 <ShieldCheck className="w-3.5 h-3.5 text-brass-400" />
-                <span>100% Shastra Compliant</span>
+                <span>Region-aware requirements</span>
               </span>
               <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded bg-temple-800 border border-brass-700/40">
                 <Sparkles className="w-3.5 h-3.5 text-brass-400" />
-                <span>Zero Fake Claims</span>
+                <span>Quality Assured</span>
               </span>
             </div>
           </div>
@@ -143,12 +150,12 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link href="/how-it-works" className="hover:text-brass-300 transition-colors font-semibold text-brass-300">
-                  How Puja Karyam Works
+                  How Samptrapthi Works
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="hover:text-brass-300 transition-colors">
-                  About Puja Karyam
+                  About Samptrapthi
                 </Link>
               </li>
               <li>
@@ -187,11 +194,11 @@ export const Footer: React.FC = () => {
         {/* Bottom Disclaimers and Integrity */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-temple-400 space-y-4 md:space-y-0">
           <p>
-            © {new Date().getFullYear()} Puja Karyam Technologies Pvt. Ltd. All rights reserved.
+            © {new Date().getFullYear()} Samptrapthi Technologies Pvt. Ltd. All rights reserved.
           </p>
 
           <p className="text-center md:text-right max-w-lg text-[11px] text-temple-400 leading-normal">
-            Puja Karyam provides ritual procurement and preparation assistance. We do not replace ordained Vedic pandits or traditional purohits; we support households and priests with guaranteed, pure materials.
+            Samptrapthi provides ritual procurement and preparation assistance. We do not replace ordained Vedic pandits or traditional purohits; we support households and priests with guaranteed, pure materials.
           </p>
         </div>
       </div>

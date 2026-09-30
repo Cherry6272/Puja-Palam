@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useMemo, Suspense } from 'react';
+import { useDataStore } from '@/hooks/useDataStore';
 import { useSearchParams } from 'next/navigation';
-import { RITUALS_DATA } from '@/data/rituals';
 import { useCart } from '@/context/CartContext';
 import { RegionalTradition } from '@/types';
 import { 
@@ -20,6 +20,7 @@ import {
 import confetti from 'canvas-confetti';
 
 function BuildYourKitContent() {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
   const searchParams = useSearchParams();
   const initialSlug = searchParams.get('ritual') || RITUALS_DATA[0].slug;
 
@@ -98,7 +99,7 @@ function BuildYourKitContent() {
       finalPrice,
       ownedItemIds,
       activeSubstitutions,
-      items: scaledItems,
+      items: scaledItems.filter(i => !ownedItemIds.includes(i.id)),
       totalItemsCount: scaledItems.length,
       procuredItemsCount: scaledItems.filter((i) => !ownedItemIds.includes(i.id)).length,
       savedAmount: ownedSavings,
@@ -334,6 +335,8 @@ function BuildYourKitContent() {
     </div>
   );
 }
+
+export const dynamic = 'force-dynamic';
 
 export default function BuildYourKitPage() {
   return (

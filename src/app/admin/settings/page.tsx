@@ -95,14 +95,14 @@ export default function AdminSettingsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div className="p-4 rounded-2xl bg-sandalwood-50 border border-sandalwood-200 space-y-1">
                 <p className="font-bold text-temple-900">Fresh Floral JIT Cut-off</p>
-                <p className="text-temple-600">Box 03 fresh flowers packed between 5:00 AM – 6:30 AM on ceremony morning.</p>
+                <p className="text-temple-600">Box 03 fresh flowers available where supported.</p>
                 <p className="text-tulsi-700 font-semibold pt-1">✓ Automated Dispatch Rule</p>
               </div>
 
               <div className="p-4 rounded-2xl bg-sandalwood-50 border border-sandalwood-200 space-y-1">
                 <p className="font-bold text-temple-900">Purity Verification</p>
                 <p className="text-temple-600">Mandatory lab purity check for edible Bhimseni camphor and Gir cow ghee wicks.</p>
-                <p className="text-tulsi-700 font-semibold pt-1">✓ 100% Shastra Compliant</p>
+                <p className="text-tulsi-700 font-semibold pt-1">✓ Region-aware ritual requirements</p>
               </div>
             </div>
           </div>

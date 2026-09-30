@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { logoutAdmin } from '@/app/actions/auth';
 import { 
-  Flame, 
+  Flower2, 
   LayoutDashboard, 
   Package, 
   Compass, 
@@ -86,11 +86,11 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         <div className="p-6 border-b border-temple-900">
           <Link href="/admin" className="flex items-center space-x-3 group">
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brass-300 via-brass-500 to-brass-700 flex items-center justify-center shadow-brass">
-              <Flame className="w-5 h-5 text-temple-950" />
+              <Flower2 className="w-5 h-5 text-temple-950" />
             </div>
             <div>
               <span className="font-serif-title text-lg font-bold tracking-wider text-sandalwood-50">
-                PUJA KARYAM
+                SAMPTRAPTHI
               </span>
               <p className="text-[9px] uppercase tracking-widest text-brass-400 font-bold">
                 Admin Console

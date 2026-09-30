@@ -1,16 +1,15 @@
 'use client';
 
 import React, { useState, useMemo, Suspense } from 'react';
+import { useDataStore } from '@/hooks/useDataStore';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { RITUALS_DATA } from '@/data/rituals';
-import { SAMAGRI_PRODUCTS } from '@/data/products';
-import { FESTIVALS_DATA } from '@/data/festivals';
 import { RitualCard } from '@/components/store/RitualCard';
 import { ProductCard } from '@/components/store/ProductCard';
 import { Search, Compass, Package, ShoppingBag, ArrowRight, Sparkles, X } from 'lucide-react';
 import Link from 'next/link';
 
 function SearchPageContent() {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialQuery = searchParams.get('q') || '';

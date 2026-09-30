@@ -6,9 +6,9 @@ import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/store/CartDrawer';
 
 export const metadata: Metadata = {
-  title: 'Puja Karyam — Next-Generation Ritual Procurement Platform',
+  title: 'Samptrapthi — Next-Generation Ritual Procurement Platform',
   description:
-    'From the first item to the final offering, Puja Karyam brings every ritual requirement together — thoughtfully curated, accurately prepared and delivered with ease.',
+    'From the first item to the final offering, Samptrapthi brings every ritual requirement together — thoughtfully curated, accurately prepared and delivered with ease.',
   keywords: [
     'Puja Samagri',
     'Ritual Procurement',
@@ -20,11 +20,11 @@ export const metadata: Metadata = {
     'Vedic Rituals',
   ],
   openGraph: {
-    title: 'Puja Karyam — Your ritual. Everything it needs.',
+    title: 'Samptrapthi — Your ritual. Everything it needs.',
     description:
       'The Next-Generation Ritual Procurement Platform. Structured Vedic intelligence, 3D interactive ritual setups, and personalized puja kits.',
     url: 'https://pujakaryam.com',
-    siteName: 'Puja Karyam',
+    siteName: 'Samptrapthi',
     locale: 'en_IN',
     type: 'website',
   },

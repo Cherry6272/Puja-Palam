@@ -1,10 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useDataStore } from '@/hooks/useDataStore';
 import Link from 'next/link';
-import { RITUALS_DATA } from '@/data/rituals';
-import { SAMAGRI_PRODUCTS } from '@/data/products';
-import { FESTIVALS_DATA } from '@/data/festivals';
 import { RitualTableCanvas } from '@/components/3d/RitualTableCanvas';
 import { RitualCard } from '@/components/store/RitualCard';
 import { ProductCard } from '@/components/store/ProductCard';
@@ -21,7 +19,7 @@ import {
   Clock, 
   MapPin, 
   Calendar, 
-  Flame, 
+  Flower2, 
   CheckCircle2,
   Home as HomeIcon,
   Heart,
@@ -32,6 +30,8 @@ import {
 import { AskPujaKaryamModal } from '@/components/ai/AskPujaKaryamModal';
 
 export default function HomePage() {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const [selectedOccasion, setSelectedOccasion] = useState<string>('festival');
   const [selectedRegionTab, setSelectedRegionTab] = useState<'karnataka' | 'tamil' | 'telugu' | 'kerala'>('karnataka');
@@ -102,7 +102,7 @@ export default function HomePage() {
           </h1>
 
           <p className="text-base sm:text-lg text-temple-700 max-w-2xl mx-auto leading-relaxed">
-            From the first item to the final offering, Puja Karyam brings every ritual requirement together — thoughtfully curated, accurately prepared and delivered with ease.
+            From the first item to the final offering, Samptrapthi brings every ritual requirement together — thoughtfully curated, accurately prepared and delivered with ease.
           </p>
 
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -160,7 +160,7 @@ export default function HomePage() {
               What are you preparing for?
             </h2>
             <p className="text-xs sm:text-sm text-temple-600">
-              Select your occasion. Puja Karyam configures the exact Vedic requirements and deducts items you already own at home.
+              Select your occasion. Samptrapthi configures the exact Vedic requirements and deducts items you already own at home.
             </p>
           </div>
 
@@ -518,7 +518,7 @@ export default function HomePage() {
             The Flow
           </span>
           <h2 className="font-serif-title text-3xl sm:text-4xl font-bold text-temple-900">
-            How Puja Karyam Works
+            How Samptrapthi Works
           </h2>
           <p className="text-sm text-temple-600">
             Moving you from &ldquo;I need to perform a puja&rdquo; to &ldquo;Everything required is taken care of.&rdquo;
@@ -562,7 +562,7 @@ export default function HomePage() {
               <span>Grounded AI Architecture</span>
             </div>
             <h2 className="font-serif-title text-3xl font-bold text-temple-900">
-              &ldquo;Ask Puja Karyam&rdquo; AI Assistant
+              &ldquo;Ask Samptrapthi&rdquo; AI Assistant
             </h2>
             <p className="text-xs sm:text-sm text-temple-700 leading-relaxed">
               Natural language queries like <em>&ldquo;What do I need for Varalakshmi Vrata for 6 people? I already have a brass diya&rdquo;</em> are strictly grounded in our canonical Knowledge Graph — never hallucinatory or dogmatic.

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { RITUALS_DATA } from '@/data/rituals';
+import { useDataStore } from '@/hooks/useDataStore';
 import { Ritual, RegionalTradition, RitualSubstitution } from '@/types';
 import { useCart } from '@/context/CartContext';
 import { IHaveThisToggle } from './IHaveThisToggle';
@@ -30,6 +30,8 @@ interface Props {
 }
 
 export const RitualPlannerWizard: React.FC<Props> = ({ initialRitualSlug }) => {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+
   const { addCustomizedKit } = useCart();
 
   // Wizard state

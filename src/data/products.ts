@@ -22,7 +22,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: 'Lifetime heirloom',
     storage: 'Wipe with dry cotton cloth after washing with pitambari or tamarind paste.',
     usedInRituals: ['satyanarayana-puja', 'griha-pravesh', 'varalakshmi-vrata', 'ganapati-puja'],
-    image: 'https://images.unsplash.com/photo-1615865417491-9941019fbc00?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/brass-kalasha-vessel.jpg',
     boxSequence: 2,
   },
   {
@@ -46,7 +46,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: 'Lifetime heirloom',
     storage: 'Keep in dry place, polish periodically with pitambari powder.',
     usedInRituals: ['satyanarayana-puja', 'ganapati-puja', 'griha-pravesh', 'varalakshmi-vrata'],
-    image: 'https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/brass-kuthuvilakku-pair.jpg',
     boxSequence: 1,
   },
   {
@@ -70,7 +70,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: '36 months in airtight glass container',
     storage: 'Keep tightly sealed in a cool, shaded area away from heat.',
     usedInRituals: ['satyanarayana-puja', 'ganapati-puja', 'griha-pravesh', 'varalakshmi-vrata'],
-    image: 'https://images.unsplash.com/photo-1594040226829-7f251ab46d80?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/bhimseni-camphor.jpg',
     boxSequence: 4,
   },
   {
@@ -94,7 +94,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: '24 months',
     storage: 'Store in moisture-free container.',
     usedInRituals: ['satyanarayana-puja', 'ganapati-puja', 'varalakshmi-vrata', 'griha-pravesh'],
-    image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/madurai-temple-kumkum.jpg',
     boxSequence: 2,
   },
   {
@@ -118,7 +118,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: '18 months',
     storage: 'Dry cool shelf.',
     usedInRituals: ['satyanarayana-puja', 'ganapati-puja', 'griha-pravesh', 'varalakshmi-vrata'],
-    image: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/salem-turmeric-powder.jpg',
     boxSequence: 2,
   },
   {
@@ -142,7 +142,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: '12 months',
     storage: 'Store in cool place under 28°C to prevent softening.',
     usedInRituals: ['satyanarayana-puja', 'ganapati-puja', 'griha-pravesh', 'varalakshmi-vrata'],
-    image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/cow-ghee-diya-wicks.jpg',
     boxSequence: 1,
   },
   {
@@ -166,7 +166,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: 'Lifetime',
     storage: 'Clean with lemon/tamarind to maintain lustrous rosy copper finish.',
     usedInRituals: ['satyanarayana-puja', 'ganapati-puja', 'griha-pravesh', 'varalakshmi-vrata'],
-    image: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/panchapatra-achamani-spoon.jpg',
     boxSequence: 1,
   },
   {
@@ -190,7 +190,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: '12 months',
     storage: 'Airtight dry container.',
     usedInRituals: ['satyanarayana-puja', 'griha-pravesh'],
-    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/navadhanya-kit.jpg',
     boxSequence: 2,
   },
   {
@@ -213,7 +213,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: '12 months',
     storage: 'Cool, dry place.',
     usedInRituals: ['satyanarayana-puja', 'ganapati-puja'],
-    image: 'https://images.unsplash.com/photo-1594040226829-7f251ab46d80?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/pure-sandalwood-paste.jpg',
     boxSequence: 2,
   },
   {
@@ -235,7 +235,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: '24 months',
     storage: 'Airtight container.',
     usedInRituals: ['satyanarayana-puja', 'griha-pravesh', 'varalakshmi-vrata'],
-    image: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/sambrani-dhoop-cups.jpg',
     boxSequence: 4,
   },
   {
@@ -257,7 +257,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: '12 months',
     storage: 'Keep away from direct sunlight.',
     usedInRituals: ['satyanarayana-puja', 'varalakshmi-vrata'],
-    image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/pure-rose-water.jpg',
     boxSequence: 1,
   },
   {
@@ -279,7 +279,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: 'Unlimited',
     storage: 'Keep dry.',
     usedInRituals: ['ganapati-puja', 'satyanarayana-puja'],
-    image: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/cotton-flower-wicks.jpg',
     boxSequence: 1,
   },
   {
@@ -301,7 +301,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: 'Unlimited',
     storage: 'Keep dry.',
     usedInRituals: ['satyanarayana-puja', 'ganapati-puja'],
-    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/sacred-janeu-thread.jpg',
     boxSequence: 3,
   },
   {

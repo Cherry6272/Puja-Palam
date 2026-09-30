@@ -126,7 +126,7 @@ export default function AdminOrdersPage() {
       boxSequenceStatus: {
         box1: 'Assembly In Progress',
         box2: 'Scheduled for Assembly',
-        box3: 'Fresh Florals Scheduled for 5:30 AM',
+        box3: 'Fresh Flowers Where Supported',
         box4: 'Queued for Aarti Packing',
       },
     };
@@ -342,7 +342,7 @@ export default function AdminOrdersPage() {
                     {[
                       { key: 'box1' as const, label: 'Box 01 — Preparation', subtitle: 'Peeta, Ganga Jal, Wicks, Lamps' },
                       { key: 'box2' as const, label: 'Box 02 — Kalasha', subtitle: 'Kalasha, Coconut, Kumkum, Akshata' },
-                      { key: 'box3' as const, label: 'Box 03 — Offerings', subtitle: 'Fresh Florals (5:30 AM Pack), Betel' },
+                      { key: 'box3' as const, label: 'Box 03 — Offerings', subtitle: 'Fresh Flowers (Where Supported), Betel' },
                       { key: 'box4' as const, label: 'Box 04 — Aarti', subtitle: 'Bhimseni Camphor, Dhoop, Bell' },
                     ].map((box) => (
                       <div key={box.key} className="p-3.5 rounded-xl border border-sandalwood-200 bg-white space-y-2">

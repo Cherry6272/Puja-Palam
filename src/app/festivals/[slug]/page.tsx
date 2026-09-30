@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useDataStore } from '@/hooks/useDataStore';
 import { notFound, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { FESTIVALS_DATA } from '@/data/festivals';
 import { dataStore } from '@/lib/dataStore';
 import { useCart } from '@/context/CartContext';
 import { 
@@ -22,6 +22,8 @@ import {
 } from 'lucide-react';
 
 export default function FestivalDetailPage() {
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+
   const params = useParams();
   const slug = params.slug as string;
   const { addProduct, addCustomizedKit } = useCart();
@@ -120,7 +122,7 @@ export default function FestivalDetailPage() {
             </div>
             <div className="flex items-center space-x-1.5 bg-temple-900/80 px-3.5 py-2 rounded-xl border border-brass-700/40 text-sandalwood-200">
               <Truck className="w-4 h-4 text-tulsi-400" />
-              <span>JIT Fresh Florals &amp; Consecrated Dispatch</span>
+              <span>Fresh Flowers Available (Select Regions)</span>
             </div>
           </div>
         </div>
