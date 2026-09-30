@@ -104,7 +104,7 @@ export default function AdminLoginPage() {
                 />
               </div>
               <p className="text-[11px] text-temple-400 mt-1">
-                Default demonstration key: <code className="text-brass-300">pujakaryam2026</code>
+                Authorized operational credentials required.
               </p>
             </div>
 

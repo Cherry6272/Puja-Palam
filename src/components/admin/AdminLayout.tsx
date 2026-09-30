@@ -28,29 +28,12 @@ interface AdminLayoutProps {
 export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-
-  useEffect(() => {
-    // Middleware handles route protection, so we just set authorized to true.
-    setIsAuthorized(true);
-  }, []);
 
   const handleLogout = async () => {
     await logoutAdmin();
     router.replace('/admin/login');
   };
-
-  if (isAuthorized === null) {
-    return (
-      <div className="min-h-screen bg-temple-950 flex items-center justify-center text-sandalwood-300 text-xs">
-        <div className="flex items-center space-x-2">
-          <ShieldCheck className="w-5 h-5 text-brass-400 animate-pulse" />
-          <span>Verifying Admin Authorization...</span>
-        </div>
-      </div>
-    );
-  }
 
   const navLinks = [
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
