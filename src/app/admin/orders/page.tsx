@@ -314,11 +314,11 @@ export default function AdminOrdersPage() {
                     <div className="space-y-1">
                       <p className="flex items-center space-x-1">
                         <Phone className="w-3.5 h-3.5 text-brass-600" />
-                        <span>{selectedOrder.customer.phone}</span>
+                        <span>{selectedOrder.customer.phone.replace(/.(?=.{4})/g, '*')}</span>
                       </p>
                       <p className="flex items-center space-x-1">
                         <Mail className="w-3.5 h-3.5 text-brass-600" />
-                        <span>{selectedOrder.customer.email}</span>
+                        <span>{selectedOrder.customer.email.replace(/(.{2})(.*)(?=@)/, '$1***')}</span>
                       </p>
                       <p className="flex items-center space-x-1 text-brass-800 font-semibold pt-1">
                         <MapPin className="w-3.5 h-3.5" />

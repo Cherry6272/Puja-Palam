@@ -84,11 +84,11 @@ export default function AdminCustomersPage() {
                       <td className="py-3.5">
                         <p className="flex items-center space-x-1 text-temple-700">
                           <Phone className="w-3 h-3 text-brass-600" />
-                          <span>{c.phone}</span>
+                          <span>{c.phone.replace(/.(?=.{4})/g, '*')}</span>
                         </p>
                         <p className="flex items-center space-x-1 text-temple-500 text-[11px]">
                           <Mail className="w-3 h-3 text-brass-600" />
-                          <span>{c.email}</span>
+                          <span>{c.email.replace(/(.{2})(.*)(?=@)/, '$1***')}</span>
                         </p>
                       </td>
                       <td className="py-3.5 font-medium">{c.city}</td>
