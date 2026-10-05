@@ -202,7 +202,12 @@ export const dataStore = {
     }>();
 
     orders.forEach((o) => {
-      const key = o.customer.email.toLowerCase() || o.customer.phone;
+      if (!o || !o.customer) return;
+      const email = o.customer.email || '';
+      const phone = o.customer.phone || '';
+      const key = email.toLowerCase() || phone;
+      if (!key) return;
+      
       const existing = customerMap.get(key);
       if (existing) {
         existing.orderCount += 1;
@@ -212,10 +217,10 @@ export const dataStore = {
         }
       } else {
         customerMap.set(key, {
-          name: o.customer.name,
-          phone: o.customer.phone,
-          email: o.customer.email,
-          city: o.customer.city,
+          name: o.customer.name || 'Unknown',
+          phone: phone,
+          email: email,
+          city: o.customer.city || 'Unknown',
           orderCount: 1,
           totalSpent: o.total,
           lastOrderDate: o.createdAt,
