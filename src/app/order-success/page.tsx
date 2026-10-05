@@ -105,9 +105,6 @@ function OrderSuccessContent() {
               Consecrated packing strictly in order of ceremonial progression.
             </p>
           </div>
-          <span className="text-xs font-bold text-tulsi-700 bg-tulsi-50 px-3 py-1 rounded-full border border-tulsi-200">
-            Demo Order State
-          </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">

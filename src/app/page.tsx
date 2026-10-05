@@ -573,7 +573,7 @@ export default function HomePage() {
               className="px-6 py-3 rounded-xl bg-temple-900 hover:bg-temple-800 text-sandalwood-50 text-xs font-bold flex items-center space-x-2 shadow-temple transition-all"
             >
               <Sparkles className="w-4 h-4 text-brass-300" />
-              <span>Try Natural Query Demo</span>
+              <span>Try AI Assistance</span>
             </button>
           </div>
 

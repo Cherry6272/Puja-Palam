@@ -1,7 +1,6 @@
 {
-  "/page": "app/page.js",
-  "/rituals/page": "app/rituals/page.js",
   "/puja-kits/page": "app/puja-kits/page.js",
+  "/rituals/page": "app/rituals/page.js",
   "/admin/page": "app/admin/page.js",
   "/admin/login/page": "app/admin/login/page.js",
   "/plan-your-puja/page": "app/plan-your-puja/page.js"
