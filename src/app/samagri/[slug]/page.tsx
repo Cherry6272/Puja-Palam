@@ -19,12 +19,20 @@ import {
 } from 'lucide-react';
 
 export default function ProductDetailPage() {
-  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA, isLoading } = useDataStore();
 
   const params = useParams();
   const slug = params.slug as string;
   const router = useRouter();
   const { addProduct } = useCart();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-brass-400 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   const product = SAMAGRI_PRODUCTS.find((p) => p.slug === slug || p.id === slug);
   if (!product) {

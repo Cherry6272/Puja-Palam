@@ -113,7 +113,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             </div>
             <div className="truncate">
               <p className="text-xs font-bold text-sandalwood-100 truncate">Lead Ritual Operations</p>
-              <p className="text-[10px] text-brass-400 truncate">admin@pujakaryam.com</p>
+              <p className="text-[10px] text-brass-400 truncate">admin@samptrapthi.com</p>
             </div>
           </div>
 

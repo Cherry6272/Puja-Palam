@@ -17,12 +17,20 @@ import {
 } from 'lucide-react';
 
 export default function KitDetailPage() {
-  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA, isLoading } = useDataStore();
 
   const params = useParams();
   const slug = params.slug as string;
   const router = useRouter();
   const { addCustomizedKit } = useCart();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-brass-400 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   // Look up by exact slug or with '-kit' stripped
   const cleanedSlug = slug.replace(/-kit$/, '');

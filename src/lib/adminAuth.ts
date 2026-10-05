@@ -1,12 +1,12 @@
 import { AdminSession, AdminUser } from '@/types';
 
 const ADMIN_SESSION_KEY = 'pk_admin_session_v2';
-const DEFAULT_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'pujakaryam2026';
+const DEFAULT_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'samptrapthi2026';
 
 const DEFAULT_ADMIN_USER: AdminUser = {
   id: 'admin-01',
   name: 'Lead Ritual Operations',
-  email: 'admin@pujakaryam.com',
+  email: 'admin@samptrapthi.com',
   role: 'super_admin',
 };
 

@@ -226,14 +226,14 @@ export default function AdminDashboardPage() {
             </Link>
           </div>
 
-          {recentOrders.length === 0 ? (
+          {isLoading || recentOrders.length === 0 ? (
             <div className="text-center py-12 border-2 border-dashed border-sandalwood-200 rounded-2xl space-y-2">
               <Package className="w-10 h-10 text-sandalwood-400 mx-auto" />
               <h4 className="font-serif-title text-base font-bold text-temple-800">
-                No Customer Orders Yet
+                {isLoading ? 'Loading Orders...' : 'No Customer Orders Yet'}
               </h4>
               <p className="text-xs text-temple-500 max-w-sm mx-auto">
-                Orders placed through the customer store will appear here in real-time, showing customer details, items, and packing pipeline.
+                {isLoading ? 'Syncing orders from operational database...' : 'Orders placed through the customer store will appear here in real-time, showing customer details, items, and packing pipeline.'}
               </p>
               <div className="pt-2">
                 <Link

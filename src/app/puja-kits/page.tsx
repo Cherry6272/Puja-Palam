@@ -1,11 +1,21 @@
 'use client';
 
 import React from 'react';
-import { RITUALS_DATA } from '@/data/rituals';
+import { useDataStore } from '@/hooks/useDataStore';
 import Link from 'next/link';
 import { Package, Compass, Check, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 
 export default function PujaKitsPage() {
+  const { rituals: RITUALS_DATA, isLoading } = useDataStore();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-brass-400 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
       {/* Header */}

@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     title: 'Samptrapthi — Your ritual. Everything it needs.',
     description:
       'The Next-Generation Ritual Procurement Platform. Structured Vedic intelligence, 3D interactive ritual setups, and personalized puja kits.',
-    url: 'https://pujakaryam.com',
+    url: 'https://samptrapthi.com',
     siteName: 'Samptrapthi',
     locale: 'en_IN',
     type: 'website',

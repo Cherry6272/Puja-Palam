@@ -64,83 +64,7 @@ export default function AdminOrdersPage() {
     }
   };
 
-  const handleCreateDemoOrder = () => {
-    const demoOrder: PlacedOrder = {
-      orderId: `PK-${Math.floor(10000 + Math.random() * 90000)}`,
-      createdAt: new Date().toISOString(),
-      customer: {
-        name: 'Suresh Raghavan',
-        phone: '+91 98450 12345',
-        email: 'suresh.raghavan@example.com',
-        address: 'Flat 402, Shravani Heritage, 12th Main, HAL 2nd Stage, Indiranagar',
-        city: 'Bengaluru',
-        state: 'Karnataka',
-        pincode: '560038',
-        ritualDate: '2026-09-18',
-        notes: 'Please ensure fresh mango leaves are packed early morning.',
-      },
-      kits: [
-        {
-          id: `kit-${Date.now()}`,
-          ritualId: 'satyanarayana-puja',
-          ritualName: 'Sri Satyanarayana Swamy Puja',
-          tier: 'complete',
-          tradition: 'karnataka-smartha',
-          peopleCount: 20,
-          date: '2026-09-18',
-          venue: 'Home Mandir',
-          basePrice: 3499,
-          finalPrice: 2849,
-          ownedItemIds: ['sn-01', 'sn-02'],
-          activeSubstitutions: {},
-          items: [],
-          totalItemsCount: 15,
-          procuredItemsCount: 13,
-          savedAmount: 650,
-        },
-      ],
-      products: [
-        {
-          product: dataStore.getProducts()[2] || {
-            id: 'prod-03',
-            slug: 'bhimseni-camphor',
-            sku: 'PK-LMP-003',
-            name: 'Pure Bhimseni Flake Camphor (Edible Grade)',
-            sanskritName: 'भीमसेनी कर्पूरम्',
-            category: 'Lamps, Wicks & Aromatics',
-            price: 180,
-            weightOrVolume: '100g Jar',
-            rating: 4.98,
-            reviewCount: 420,
-            inStock: true,
-            inventoryByHub: { blr: 850, maa: 620, hyd: 530 },
-            description: '100% natural botanical camphor',
-            ritualRelevance: 'Aarti',
-            shelfLife: '36 months',
-            storage: 'Airtight',
-            usedInRituals: ['satyanarayana-puja'],
-            image: '',
-            boxSequence: 4,
-          },
-          quantity: 2,
-        },
-      ],
-      subtotal: 3859,
-      savings: 650,
-      total: 3209,
-      assignedHub: 'Bengaluru Central (Indiranagar)',
-      boxSequenceStatus: {
-        box1: 'Assembly In Progress',
-        box2: 'Scheduled for Assembly',
-        box3: 'Fresh Flowers Where Supported',
-        box4: 'Queued for Aarti Packing',
-      },
-    };
 
-    dataStore.addOrder(demoOrder);
-    loadOrders();
-    setSelectedOrder(demoOrder);
-  };
 
   const filteredOrders = orders.filter((o) => {
     const matchesSearch =
@@ -167,15 +91,6 @@ export default function AdminOrdersPage() {
             </p>
           </div>
 
-          <div className="flex items-center space-x-2 self-start sm:self-auto">
-            <button
-              type="button"
-              onClick={handleCreateDemoOrder}
-              className="px-3.5 py-2 rounded-xl bg-brass-500 hover:bg-brass-600 text-temple-950 font-bold text-xs shadow-brass transition-all"
-            >
-              + Create Test Order
-            </button>
-          </div>
         </div>
 
         {/* Filter and Search Bar */}
@@ -219,17 +134,8 @@ export default function AdminOrdersPage() {
               No Customer Orders Placed Yet
             </h3>
             <p className="text-xs text-temple-500 max-w-md mx-auto leading-relaxed">
-              When customers complete checkout on the storefront, their orders appear here automatically. You can also generate a verified test order to inspect the 4-box packing workflow.
+              When customers complete checkout on the storefront, their orders appear here automatically. You can inspect the 4-box packing workflow once orders arrive.
             </p>
-            <div className="pt-3">
-              <button
-                type="button"
-                onClick={handleCreateDemoOrder}
-                className="px-4 py-2.5 rounded-xl bg-temple-900 text-sandalwood-100 text-xs font-bold shadow-temple hover:bg-temple-800 transition-all"
-              >
-                Generate Demo Customer Order
-              </button>
-            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">

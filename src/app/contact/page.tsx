@@ -149,7 +149,7 @@ export default function ContactPage() {
                   <span>Bengaluru Central Hub</span>
                 </div>
                 <p className="text-temple-600">12th Main Road, HAL 2nd Stage, Indiranagar, Bengaluru, KA 560038</p>
-                <p className="text-brass-800 font-semibold pt-1">support.blr@pujakaryam.com</p>
+                <p className="text-brass-800 font-semibold pt-1">support.blr@samptrapthi.com</p>
               </div>
 
               <div className="p-4 rounded-2xl bg-sandalwood-50 border border-sandalwood-200 space-y-1">
@@ -158,7 +158,7 @@ export default function ContactPage() {
                   <span>Chennai South Hub</span>
                 </div>
                 <p className="text-temple-600">Luz Church Road, Mylapore, Chennai, TN 600004</p>
-                <p className="text-brass-800 font-semibold pt-1">support.maa@pujakaryam.com</p>
+                <p className="text-brass-800 font-semibold pt-1">support.maa@samptrapthi.com</p>
               </div>
 
               <div className="p-4 rounded-2xl bg-sandalwood-50 border border-sandalwood-200 space-y-1">
@@ -167,7 +167,7 @@ export default function ContactPage() {
                   <span>Hyderabad Deccan Hub</span>
                 </div>
                 <p className="text-temple-600">RP Road, Secunderabad, Telangana 500003</p>
-                <p className="text-brass-800 font-semibold pt-1">support.hyd@pujakaryam.com</p>
+                <p className="text-brass-800 font-semibold pt-1">support.hyd@samptrapthi.com</p>
               </div>
             </div>
           </div>

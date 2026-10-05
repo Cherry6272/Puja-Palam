@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('admin@pujakaryam.com');
+  const [email, setEmail] = useState('admin@samptrapthi.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -79,7 +79,7 @@ export default function AdminLoginPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@pujakaryam.com"
+                  placeholder="admin@samptrapthi.com"
                   required
                   className="w-full pl-10 pr-4 py-3 rounded-xl bg-temple-950 border border-temple-700 text-sandalwood-100 text-sm placeholder:text-temple-500 focus:outline-none focus:ring-2 focus:ring-brass-500 focus:border-transparent transition-all"
                 />
