@@ -5,8 +5,10 @@ import { AdminLayout } from '@/components/admin/AdminLayout';
 import { dataStore } from '@/lib/dataStore';
 import { Festival } from '@/types';
 import { Calendar, Edit3, Save, Sparkles, MapPin, X } from 'lucide-react';
+import { useDataStore } from '@/hooks/useDataStore';
 
 export default function AdminFestivalsPage() {
+  const { festivals: rawFestivals, isLoading } = useDataStore();
   const [festivals, setFestivals] = useState<Festival[]>([]);
   const [editingFestival, setEditingFestival] = useState<Festival | null>(null);
 
@@ -15,8 +17,10 @@ export default function AdminFestivalsPage() {
   };
 
   useEffect(() => {
-    loadFestivals();
-  }, []);
+    if (!isLoading) {
+      setFestivals(rawFestivals);
+    }
+  }, [isLoading, rawFestivals]);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +43,20 @@ export default function AdminFestivalsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {festivals.map((fest) => (
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20 space-y-4 col-span-2">
+            <div className="w-8 h-8 border-4 border-brass-400 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-sm font-semibold text-temple-600">Loading festivals...</p>
+          </div>
+        ) : festivals.length === 0 ? (
+          <div className="text-center py-12 border-2 border-dashed border-sandalwood-300 rounded-2xl bg-white col-span-2">
+            <Calendar className="w-12 h-12 text-sandalwood-400 mx-auto mb-3" />
+            <h3 className="font-serif-title text-xl font-bold text-temple-900">No Festivals Found</h3>
+            <p className="text-sm text-temple-600 mt-1 max-w-md mx-auto">
+              The festival calendar is currently empty.
+            </p>
+          </div>
+        ) : festivals.map((fest) => (
             <div key={fest.id} className="bg-white rounded-3xl border border-sandalwood-200 shadow-subtle p-6 space-y-3 flex flex-col justify-between">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">

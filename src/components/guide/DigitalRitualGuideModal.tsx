@@ -17,14 +17,56 @@ import {
 } from 'lucide-react';
 
 export const DigitalRitualGuideModal: React.FC = () => {
-  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA, isLoading } = useDataStore();
 
-  const [selectedRitualId, setSelectedRitualId] = useState(RITUALS_DATA[0].id);
+  const [selectedRitualId, setSelectedRitualId] = useState(RITUALS_DATA[0]?.id || '');
   const [activeTab, setActiveTab] = useState<'timeline' | 'checklist' | 'audio'>('timeline');
   const [selectedLang, setSelectedLang] = useState<'English' | 'Kannada' | 'Tamil' | 'Telugu' | 'Hindi'>('English');
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
   const ritual = RITUALS_DATA.find((r) => r.id === selectedRitualId) || RITUALS_DATA[0];
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      if (isPlayingAudio) {
+        const utterance = new SpeechSynthesisUtterance("Om Namo Bhagavate Satyanarayanaya Namaha. Om Namo Bhagavate Satyanarayanaya Namaha. Om Namo Bhagavate Satyanarayanaya Namaha.");
+        utterance.lang = 'hi-IN'; // Indian Hindi voice for better Sanskrit-like pronunciation
+        utterance.rate = 0.8;
+        utterance.pitch = 0.9;
+        utterance.onend = () => setIsPlayingAudio(false);
+        window.speechSynthesis.cancel(); // Cancel any ongoing speech
+        window.speechSynthesis.speak(utterance);
+      } else {
+        window.speechSynthesis.cancel();
+      }
+    }
+  }, [isPlayingAudio]);
+
+  React.useEffect(() => {
+    // Cleanup on unmount
+    return () => {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (!isLoading && RITUALS_DATA.length > 0 && !selectedRitualId) {
+      setSelectedRitualId(RITUALS_DATA[0].id);
+    }
+  }, [isLoading, RITUALS_DATA, selectedRitualId]);
+
+  if (isLoading || !ritual) {
+    return (
+      <div className="bg-white rounded-3xl border border-sandalwood-200 shadow-temple overflow-hidden flex items-center justify-center py-32">
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="w-8 h-8 border-4 border-brass-400 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-sm font-semibold text-temple-600">Loading Digital Guide...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-3xl border border-sandalwood-200 shadow-temple overflow-hidden">

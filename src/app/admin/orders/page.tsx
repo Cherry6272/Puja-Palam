@@ -21,8 +21,10 @@ import {
   Layers,
   ChevronDown
 } from 'lucide-react';
+import { useDataStore } from '@/hooks/useDataStore';
 
 export default function AdminOrdersPage() {
+  const { orders: rawOrders, isLoading } = useDataStore();
   const [orders, setOrders] = useState<PlacedOrder[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedHubFilter, setSelectedHubFilter] = useState('all');
@@ -35,10 +37,14 @@ export default function AdminOrdersPage() {
       setSelectedOrder(list[0]);
     }
   };
-
   useEffect(() => {
-    loadOrders();
-  }, []);
+    if (!isLoading) {
+      setOrders(rawOrders);
+      if (rawOrders.length > 0 && !selectedOrder) {
+        setSelectedOrder(rawOrders[0]);
+      }
+    }
+  }, [isLoading, rawOrders]);
 
   const handleUpdateBoxStatus = (
     orderId: string,
@@ -201,7 +207,12 @@ export default function AdminOrdersPage() {
         </div>
 
         {/* Orders Layout: List + Detail */}
-        {orders.length === 0 ? (
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20 space-y-4 bg-white rounded-3xl border border-sandalwood-200 shadow-subtle">
+            <div className="w-8 h-8 border-4 border-brass-400 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-sm font-semibold text-temple-600">Loading orders...</p>
+          </div>
+        ) : orders.length === 0 ? (
           <div className="bg-white rounded-3xl border-2 border-dashed border-sandalwood-200 p-12 text-center space-y-3">
             <Package className="w-12 h-12 text-sandalwood-400 mx-auto" />
             <h3 className="font-serif-title text-xl font-bold text-temple-900">

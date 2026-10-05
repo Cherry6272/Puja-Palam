@@ -19,7 +19,10 @@ import {
   RefreshCw
 } from 'lucide-react';
 
+import { useDataStore } from '@/hooks/useDataStore';
+
 export default function AdminDashboardPage() {
+  const { isLoading } = useDataStore();
   const [stats, setStats] = useState(() => dataStore.getOperationalStats());
   const [recentOrders, setRecentOrders] = useState(() => dataStore.getOrders().slice(0, 5));
 
@@ -29,8 +32,10 @@ export default function AdminDashboardPage() {
   };
 
   useEffect(() => {
-    refreshData();
-  }, []);
+    if (!isLoading) {
+      refreshData();
+    }
+  }, [isLoading]);
 
   return (
     <AdminLayout>
@@ -70,7 +75,7 @@ export default function AdminDashboardPage() {
               <Package className="w-4 h-4 text-brass-600" />
             </div>
             <p className="font-serif-title text-2xl font-bold text-temple-900">
-              {stats.totalOrders}
+              {isLoading ? '-' : stats.totalOrders}
             </p>
             <p className="text-[11px] text-temple-500">
               {stats.totalOrders === 0 ? 'No orders placed yet' : `${stats.totalOrders} verified orders recorded`}
@@ -83,7 +88,7 @@ export default function AdminDashboardPage() {
               <TrendingUp className="w-4 h-4 text-tulsi-600" />
             </div>
             <p className="font-serif-title text-2xl font-bold text-temple-900">
-              ₹{stats.totalRevenue.toLocaleString('en-IN')}
+              {isLoading ? '-' : `₹${stats.totalRevenue.toLocaleString('en-IN')}`}
             </p>
             <p className="text-[11px] text-temple-500">
               {stats.totalRevenue === 0 ? 'Awaiting initial checkout' : 'From completed orders'}
@@ -96,7 +101,7 @@ export default function AdminDashboardPage() {
               <ShoppingBag className="w-4 h-4 text-brass-600" />
             </div>
             <p className="font-serif-title text-2xl font-bold text-temple-900">
-              {stats.activeProductsCount}
+              {isLoading ? '-' : stats.activeProductsCount}
             </p>
             <p className="text-[11px] text-temple-500">
               Single-origin unadulterated items
@@ -109,7 +114,7 @@ export default function AdminDashboardPage() {
               <AlertTriangle className={`w-4 h-4 ${stats.lowStockCount > 0 ? 'text-vermillion-600' : 'text-tulsi-600'}`} />
             </div>
             <p className={`font-serif-title text-2xl font-bold ${stats.lowStockCount > 0 ? 'text-vermillion-700' : 'text-temple-900'}`}>
-              {stats.lowStockCount}
+              {isLoading ? '-' : stats.lowStockCount}
             </p>
             <p className="text-[11px] text-temple-500">
               {stats.lowStockCount > 0 ? 'Items below 400 total units' : 'All hubs adequately stocked'}

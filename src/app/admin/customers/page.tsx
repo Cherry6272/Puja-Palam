@@ -5,14 +5,18 @@ import { AdminLayout } from '@/components/admin/AdminLayout';
 import { dataStore } from '@/lib/dataStore';
 import { Users, Phone, Mail, MapPin, Package, Search } from 'lucide-react';
 import Link from 'next/link';
+import { useDataStore } from '@/hooks/useDataStore';
 
 export default function AdminCustomersPage() {
-  const [customers, setCustomers] = useState(() => dataStore.getCustomers());
+  const { customers: rawCustomers, isLoading } = useDataStore();
+  const [customers, setCustomers] = useState<ReturnType<typeof dataStore.getCustomers>>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    setCustomers(dataStore.getCustomers());
-  }, []);
+    if (!isLoading) {
+      setCustomers(rawCustomers);
+    }
+  }, [isLoading, rawCustomers]);
 
   const filteredCustomers = customers.filter(
     (c) =>
@@ -34,7 +38,12 @@ export default function AdminCustomersPage() {
           </p>
         </div>
 
-        {customers.length === 0 ? (
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20 space-y-4 bg-white rounded-3xl border border-sandalwood-200 shadow-subtle">
+            <div className="w-8 h-8 border-4 border-brass-400 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-sm font-semibold text-temple-600">Loading customers...</p>
+          </div>
+        ) : customers.length === 0 ? (
           <div className="bg-white rounded-3xl border-2 border-dashed border-sandalwood-200 p-12 text-center space-y-3">
             <Users className="w-12 h-12 text-sandalwood-400 mx-auto" />
             <h3 className="font-serif-title text-xl font-bold text-temple-900">

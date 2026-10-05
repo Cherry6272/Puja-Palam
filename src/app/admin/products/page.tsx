@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { dataStore } from '@/lib/dataStore';
 import { SamagriProduct, ItemCategory } from '@/types';
+import { useDataStore } from '@/hooks/useDataStore';
 import { 
   ShoppingBag, 
   Search, 
@@ -29,21 +30,25 @@ const CATEGORIES: ItemCategory[] = [
 ];
 
 export default function AdminProductsPage() {
+  const { products: rawProducts, rituals: rawRituals, isLoading } = useDataStore();
   const [products, setProducts] = useState<SamagriProduct[]>([]);
-  const [rituals, setRituals] = useState(() => dataStore.getRituals());
+  const [rituals, setRituals] = useState<typeof rawRituals>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [editingProduct, setEditingProduct] = useState<SamagriProduct | null>(null);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
 
+  useEffect(() => {
+    if (!isLoading) {
+      setProducts(rawProducts);
+      setRituals(rawRituals);
+    }
+  }, [isLoading, rawProducts, rawRituals]);
+
   const loadProducts = () => {
     setProducts(dataStore.getProducts());
     setRituals(dataStore.getRituals());
   };
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
 
   const handleStockDelta = (id: string, hub: 'blr' | 'maa' | 'hyd', delta: number) => {
     dataStore.updateProductStock(id, hub, delta);
@@ -168,7 +173,20 @@ export default function AdminProductsPage() {
           </div>
 
           <div className="divide-y divide-sandalwood-100">
-            {filteredProducts.map((p) => {
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center py-20 space-y-4">
+                <div className="w-8 h-8 border-4 border-brass-400 border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-sm font-semibold text-temple-600">Loading catalog items...</p>
+              </div>
+            ) : products.length === 0 ? (
+              <div className="text-center py-12 border-2 border-dashed border-sandalwood-300 rounded-2xl bg-white m-4">
+                <ShoppingBag className="w-12 h-12 text-sandalwood-400 mx-auto mb-3" />
+                <h3 className="font-serif-title text-xl font-bold text-temple-900">No Catalog Items Found</h3>
+                <p className="text-sm text-temple-600 mt-1 max-w-md mx-auto">
+                  The product database is currently empty. Click 'Add Samagri SKU' to start building your catalog.
+                </p>
+              </div>
+            ) : filteredProducts.map((p) => {
               const totalStock = p.inventoryByHub.blr + p.inventoryByHub.maa + p.inventoryByHub.hyd;
               return (
                 <div key={p.id} className="p-5 hover:bg-sandalwood-50/50 transition-colors flex flex-col lg:flex-row lg:items-center justify-between gap-4">

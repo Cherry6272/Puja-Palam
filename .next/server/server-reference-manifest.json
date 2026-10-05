@@ -1,26 +1,5 @@
 {
-  "node": {
-    "0e4a1c8263cfcd733e3d02c8d020a3f9be7c969c": {
-      "workers": {
-        "app/admin/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CAdmin%5C%5CDocuments%5C%5CGitHub%5C%5CPuja-Palam%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Cauth.ts%22%2C%5B%22logoutAdmin%22%2C%22loginAdmin%22%5D%5D%5D&__client_imported__=true!",
-        "app/admin/login/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CAdmin%5C%5CDocuments%5C%5CGitHub%5C%5CPuja-Palam%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Cauth.ts%22%2C%5B%22logoutAdmin%22%2C%22loginAdmin%22%5D%5D%5D&__client_imported__=true!"
-      },
-      "layer": {
-        "app/admin/page": "action-browser",
-        "app/admin/login/page": "action-browser"
-      }
-    },
-    "9e25519c1d8b47ab457903bfa9d94f8330f46191": {
-      "workers": {
-        "app/admin/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CAdmin%5C%5CDocuments%5C%5CGitHub%5C%5CPuja-Palam%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Cauth.ts%22%2C%5B%22logoutAdmin%22%2C%22loginAdmin%22%5D%5D%5D&__client_imported__=true!",
-        "app/admin/login/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CAdmin%5C%5CDocuments%5C%5CGitHub%5C%5CPuja-Palam%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Cauth.ts%22%2C%5B%22logoutAdmin%22%2C%22loginAdmin%22%5D%5D%5D&__client_imported__=true!"
-      },
-      "layer": {
-        "app/admin/page": "action-browser",
-        "app/admin/login/page": "action-browser"
-      }
-    }
-  },
+  "node": {},
   "edge": {},
-  "encryptionKey": "K+eEOiJjS54wZNfiYdAZ1MCcjzJ+MqDfYbsCrvkHqd4="
+  "encryptionKey": "7JOKCVX0tbLOmic99aOwrqeD2dAUWhNvkT7ZW7zZob4="
 }

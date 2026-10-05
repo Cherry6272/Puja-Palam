@@ -5,8 +5,10 @@ import { AdminLayout } from '@/components/admin/AdminLayout';
 import { dataStore } from '@/lib/dataStore';
 import { Ritual } from '@/types';
 import { Layers, Edit3, Check, ShieldCheck, Sparkles, Save } from 'lucide-react';
+import { useDataStore } from '@/hooks/useDataStore';
 
 export default function AdminKitsPage() {
+  const { rituals: rawRituals, isLoading } = useDataStore();
   const [rituals, setRituals] = useState<Ritual[]>([]);
   const [editingTier, setEditingTier] = useState<{
     ritualId: string;
@@ -20,8 +22,10 @@ export default function AdminKitsPage() {
   };
 
   useEffect(() => {
-    loadKits();
-  }, []);
+    if (!isLoading) {
+      setRituals(rawRituals);
+    }
+  }, [isLoading, rawRituals]);
 
   const handleSaveTier = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,7 +63,20 @@ export default function AdminKitsPage() {
         </div>
 
         <div className="space-y-8">
-          {rituals.map((ritual) => (
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-20 space-y-4">
+              <div className="w-8 h-8 border-4 border-brass-400 border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-sm font-semibold text-temple-600">Loading kit configurations...</p>
+            </div>
+          ) : rituals.length === 0 ? (
+            <div className="text-center py-12 border-2 border-dashed border-sandalwood-300 rounded-2xl bg-white">
+              <Layers className="w-12 h-12 text-sandalwood-400 mx-auto mb-3" />
+              <h3 className="font-serif-title text-xl font-bold text-temple-900">No Kits Configured</h3>
+              <p className="text-sm text-temple-600 mt-1 max-w-md mx-auto">
+                Kits are built automatically from Rituals. Please add Canonical Rituals first.
+              </p>
+            </div>
+          ) : rituals.map((ritual) => (
             <div key={ritual.id} className="bg-white rounded-3xl border border-sandalwood-200 shadow-subtle p-6 sm:p-8 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-sandalwood-200 gap-2">
                 <div>

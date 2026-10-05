@@ -18,7 +18,10 @@ import {
   Calendar
 } from 'lucide-react';
 
+import { useDataStore } from '@/hooks/useDataStore';
+
 export default function AdminRitualsPage() {
+  const { rituals: rawRituals, isLoading } = useDataStore();
   const [rituals, setRituals] = useState<Ritual[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRitual, setSelectedRitual] = useState<Ritual | null>(null);
@@ -41,8 +44,13 @@ export default function AdminRitualsPage() {
   };
 
   useEffect(() => {
-    loadRituals();
-  }, []);
+    if (!isLoading) {
+      setRituals(rawRituals);
+      if (rawRituals.length > 0 && !selectedRitual) {
+        setSelectedRitual(rawRituals[0]);
+      }
+    }
+  }, [isLoading, rawRituals]);
 
   const handleRemoveItem = (itemId: string) => {
     if (!selectedRitual) return;
@@ -122,8 +130,23 @@ export default function AdminRitualsPage() {
 
         {/* Split view: Rituals list & Requirement Manifest */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* List Col */}
-          <div className="lg:col-span-4 bg-white rounded-3xl border border-sandalwood-200 shadow-subtle overflow-hidden">
+          {isLoading ? (
+            <div className="lg:col-span-12 flex flex-col items-center justify-center py-20 space-y-4 bg-white rounded-3xl border border-sandalwood-200 shadow-subtle">
+              <div className="w-8 h-8 border-4 border-brass-400 border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-sm font-semibold text-temple-600">Loading rituals...</p>
+            </div>
+          ) : rituals.length === 0 ? (
+            <div className="lg:col-span-12 text-center py-12 border-2 border-dashed border-sandalwood-300 rounded-2xl bg-white shadow-subtle">
+              <Compass className="w-12 h-12 text-sandalwood-400 mx-auto mb-3" />
+              <h3 className="font-serif-title text-xl font-bold text-temple-900">No Canonical Rituals Found</h3>
+              <p className="text-sm text-temple-600 mt-1 max-w-md mx-auto">
+                The ritual database is currently empty. Add rituals to start building kits.
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* List Col */}
+              <div className="lg:col-span-4 bg-white rounded-3xl border border-sandalwood-200 shadow-subtle overflow-hidden">
             <div className="p-4 bg-temple-900 text-sandalwood-100 border-b border-temple-800">
               <span className="font-serif-title text-sm font-bold">
                 Canonical Rituals ({filteredRituals.length})
@@ -344,6 +367,8 @@ export default function AdminRitualsPage() {
                 </form>
               </div>
             </div>
+          )}
+            </>
           )}
         </div>
 

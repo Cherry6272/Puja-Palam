@@ -30,18 +30,18 @@ interface Props {
 }
 
 export const RitualPlannerWizard: React.FC<Props> = ({ initialRitualSlug }) => {
-  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA, isLoading } = useDataStore();
 
   const { addCustomizedKit } = useCart();
 
   // Wizard state
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedRitualId, setSelectedRitualId] = useState<string>(() => {
-    if (initialRitualSlug) {
+    if (initialRitualSlug && RITUALS_DATA.length > 0) {
       const match = RITUALS_DATA.find((r) => r.slug === initialRitualSlug);
       if (match) return match.id;
     }
-    return RITUALS_DATA[0].id;
+    return RITUALS_DATA[0]?.id || '';
   });
 
   const [selectedRegion, setSelectedRegion] = useState<RegionalTradition>('karnataka-smartha');
@@ -55,11 +55,13 @@ export const RitualPlannerWizard: React.FC<Props> = ({ initialRitualSlug }) => {
 
   // Selected ritual object
   const ritual = useMemo(() => {
+    if (isLoading || RITUALS_DATA.length === 0) return null;
     return RITUALS_DATA.find((r) => r.id === selectedRitualId) || RITUALS_DATA[0];
-  }, [selectedRitualId]);
+  }, [selectedRitualId, RITUALS_DATA, isLoading]);
 
   // Scaled items based on guest count
   const scaledItems = useMemo(() => {
+    if (!ritual) return [];
     const scaleFactor = Math.max(1, peopleCount / 10);
     return ritual.baseRequiredItems.map((item) => {
       let scaledQty = item.quantity;
@@ -75,12 +77,26 @@ export const RitualPlannerWizard: React.FC<Props> = ({ initialRitualSlug }) => {
     });
   }, [ritual, peopleCount]);
 
+  React.useEffect(() => {
+    if (!isLoading && RITUALS_DATA.length > 0 && !selectedRitualId) {
+      if (initialRitualSlug) {
+        const match = RITUALS_DATA.find((r) => r.slug === initialRitualSlug);
+        if (match) {
+          setSelectedRitualId(match.id);
+          return;
+        }
+      }
+      setSelectedRitualId(RITUALS_DATA[0].id);
+    }
+  }, [isLoading, RITUALS_DATA, initialRitualSlug, selectedRitualId]);
+
   // Financial calculations
-  const tierConfig = ritual.tiers[selectedTier];
-  const basePrice = tierConfig.price;
+  const tierConfig = ritual ? ritual.tiers[selectedTier] : null;
+  const basePrice = tierConfig ? tierConfig.price : 0;
 
   // Deduction for owned items
   const ownedSavings = useMemo(() => {
+    if (!ritual) return 0;
     return ritual.baseRequiredItems
       .filter((i) => ownedItemIds.includes(i.id))
       .reduce((sum, i) => sum + Math.round(i.estimatedPrice * (selectedTier === 'premium' ? 1.4 : 1)), 0);
@@ -126,6 +142,15 @@ export const RitualPlannerWizard: React.FC<Props> = ({ initialRitualSlug }) => {
       savedAmount: ownedSavings,
     });
   };
+
+  if (isLoading || !ritual) {
+    return (
+      <div className="flex flex-col items-center justify-center space-y-4 py-32 mx-4 sm:mx-6 lg:mx-8 bg-white rounded-3xl border border-sandalwood-200 shadow-xl max-w-5xl lg:mx-auto mt-8">
+        <div className="w-8 h-8 border-4 border-brass-400 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-sm font-semibold text-temple-600">Initializing Planner...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

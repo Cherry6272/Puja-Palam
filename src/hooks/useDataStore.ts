@@ -6,15 +6,24 @@ import { RITUALS_DATA } from '@/data/rituals';
 import { FESTIVALS_DATA } from '@/data/festivals';
 
 export function useDataStore() {
-  const [products, setProducts] = useState(SAMAGRI_PRODUCTS);
-  const [rituals, setRituals] = useState(RITUALS_DATA);
-  const [festivals, setFestivals] = useState(FESTIVALS_DATA);
+  const [products, setProducts] = useState<typeof SAMAGRI_PRODUCTS>([]);
+  const [rituals, setRituals] = useState<typeof RITUALS_DATA>([]);
+  const [festivals, setFestivals] = useState<typeof FESTIVALS_DATA>([]);
+  const [orders, setOrders] = useState<ReturnType<typeof dataStore.getOrders>>([]);
+  const [customers, setCustomers] = useState<ReturnType<typeof dataStore.getCustomers>>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setProducts(dataStore.getProducts());
-    setRituals(dataStore.getRituals());
-    setFestivals(dataStore.getFestivals());
+    try {
+      setProducts(dataStore.getProducts());
+      setRituals(dataStore.getRituals());
+      setFestivals(dataStore.getFestivals());
+      setOrders(dataStore.getOrders());
+      setCustomers(dataStore.getCustomers());
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
-  return { products, rituals, festivals };
+  return { products, rituals, festivals, orders, customers, isLoading };
 }

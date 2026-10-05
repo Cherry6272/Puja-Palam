@@ -35,7 +35,7 @@ interface ParsedResult {
 }
 
 export const AskPujaKaryamModal: React.FC<Props> = ({ isOpen, onClose }) => {
-  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA, isLoading } = useDataStore();
   const router = useRouter();
   const { addCustomizedKit } = useCart();
   const [query, setQuery] = useState('');
@@ -43,6 +43,7 @@ export const AskPujaKaryamModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const [result, setResult] = useState<ParsedResult | null>(null);
 
   if (!isOpen) return null;
+  if (isLoading || RITUALS_DATA.length === 0) return null;
 
   const samplePrompts = [
     "What do I need for a Griha Pravesh?",

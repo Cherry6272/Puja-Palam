@@ -20,9 +20,9 @@ import {
 import confetti from 'canvas-confetti';
 
 function BuildYourKitContent() {
-  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA } = useDataStore();
+  const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA, isLoading } = useDataStore();
   const searchParams = useSearchParams();
-  const initialSlug = searchParams.get('ritual') || RITUALS_DATA[0].slug;
+  const initialSlug = searchParams.get('ritual') || '';
 
   const [selectedSlug, setSelectedSlug] = useState<string>(initialSlug);
   const [selectedTradition, setSelectedTradition] = useState<RegionalTradition>('karnataka-smartha');
@@ -34,14 +34,16 @@ function BuildYourKitContent() {
   const { addCustomizedKit } = useCart();
 
   const ritual = useMemo(() => {
+    if (isLoading || RITUALS_DATA.length === 0) return null;
     return (
       RITUALS_DATA.find((r) => r.slug === selectedSlug || r.id === selectedSlug) ||
       RITUALS_DATA[0]
     );
-  }, [selectedSlug]);
+  }, [selectedSlug, RITUALS_DATA, isLoading]);
 
   // Scaled items based on guest count
   const scaledItems = useMemo(() => {
+    if (!ritual) return [];
     const scaleFactor = Math.max(1, peopleCount / 10);
     return ritual.baseRequiredItems.map((item) => {
       let scaledQty = item.quantity;
@@ -58,7 +60,7 @@ function BuildYourKitContent() {
   }, [ritual, peopleCount]);
 
   // Financial calculations
-  const basePrice = ritual.tiers[selectedTier].price;
+  const basePrice = ritual ? ritual.tiers[selectedTier].price : 0;
 
   const ownedSavings = useMemo(() => {
     return scaledItems
@@ -105,6 +107,15 @@ function BuildYourKitContent() {
       savedAmount: ownedSavings,
     });
   };
+
+  if (isLoading || !ritual) {
+    return (
+      <div className="container mx-auto px-4 py-32 flex flex-col items-center justify-center space-y-4">
+        <div className="w-8 h-8 border-4 border-brass-400 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-sm font-semibold text-temple-600">Initializing Builder Module...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
