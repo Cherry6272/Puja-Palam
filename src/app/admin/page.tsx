@@ -78,7 +78,7 @@ export default function AdminDashboardPage() {
               {isLoading ? '-' : stats.totalOrders}
             </p>
             <p className="text-[11px] text-temple-500">
-              {stats.totalOrders === 0 ? 'No orders placed yet' : `${stats.totalOrders} verified orders recorded`}
+              {isLoading ? '...' : (stats.totalOrders === 0 ? 'No orders placed yet' : `${stats.totalOrders} verified orders recorded`)}
             </p>
           </div>
 
@@ -91,7 +91,7 @@ export default function AdminDashboardPage() {
               {isLoading ? '-' : `₹${stats.totalRevenue.toLocaleString('en-IN')}`}
             </p>
             <p className="text-[11px] text-temple-500">
-              {stats.totalRevenue === 0 ? 'Awaiting initial checkout' : 'From completed orders'}
+              {isLoading ? '...' : (stats.totalRevenue === 0 ? 'Awaiting initial checkout' : 'From completed orders')}
             </p>
           </div>
 
@@ -111,13 +111,13 @@ export default function AdminDashboardPage() {
           <div className="p-5 rounded-2xl bg-white border border-sandalwood-200 shadow-subtle space-y-2">
             <div className="flex items-center justify-between text-temple-500">
               <span className="text-xs font-bold uppercase tracking-wider">Low Stock Alerts</span>
-              <AlertTriangle className={`w-4 h-4 ${stats.lowStockCount > 0 ? 'text-vermillion-600' : 'text-tulsi-600'}`} />
+              <AlertTriangle className={`w-4 h-4 ${!isLoading && stats.lowStockCount > 0 ? 'text-vermillion-600' : 'text-tulsi-600'}`} />
             </div>
-            <p className={`font-serif-title text-2xl font-bold ${stats.lowStockCount > 0 ? 'text-vermillion-700' : 'text-temple-900'}`}>
+            <p className={`font-serif-title text-2xl font-bold ${!isLoading && stats.lowStockCount > 0 ? 'text-vermillion-700' : 'text-temple-900'}`}>
               {isLoading ? '-' : stats.lowStockCount}
             </p>
             <p className="text-[11px] text-temple-500">
-              {stats.lowStockCount > 0 ? 'Items below 400 total units' : 'All hubs adequately stocked'}
+              {isLoading ? '...' : (stats.lowStockCount > 0 ? 'Items below 400 total units' : 'All hubs adequately stocked')}
             </p>
           </div>
         </div>
