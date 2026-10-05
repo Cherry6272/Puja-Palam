@@ -123,6 +123,8 @@ export const RitualPlannerWizard: React.FC<Props> = ({ initialRitualSlug }) => {
       // ignore
     }
 
+    if (!ritual) return;
+
     addCustomizedKit({
       id: `kit-${Date.now()}`,
       ritualId: ritual.id,

@@ -88,6 +88,8 @@ function BuildYourKitContent() {
       // ignore
     }
 
+    if (!ritual) return;
+
     addCustomizedKit({
       id: `custom-kit-${Date.now()}`,
       ritualId: ritual.id,
