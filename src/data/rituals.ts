@@ -14,7 +14,7 @@ const BASE_RITUALS: Ritual[] = [
     typicalDuration: '2.5 – 3.5 Hours',
     idealTime: 'Evening (Sandhya Kalam) or Pratah Kalam on Purnima',
     auspiciousTithi: 'Purnima, Sankranti, or Auspicious Thursdays',
-    image: 'https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/rituals/satyanarayana-puja.jpg',
     accentColor: '#C59B27',
     mantraAudioSnippet: {
       title: 'Sri Satyanarayana Moola Mantra & Dhyana',
@@ -440,7 +440,7 @@ const BASE_RITUALS: Ritual[] = [
     typicalDuration: '1.5 – 2 Hours',
     idealTime: 'Pratah Kalam (Morning) or Madhyahna',
     auspiciousTithi: 'Shukla Chaturthi or before any new venture',
-    image: 'https://images.unsplash.com/photo-1567591414240-e223010b42b6?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/rituals/mahaganputi-puja.jpg',
     accentColor: '#B33927',
     mantraAudioSnippet: {
       title: 'Ganapati Atharvashirsha & Maha Sankalpa',
@@ -655,7 +655,7 @@ const BASE_RITUALS: Ritual[] = [
     typicalDuration: '3.5 – 5 Hours',
     idealTime: 'Brahma Muhurta or Shubh Muhurta fixed by Panchanga',
     auspiciousTithi: 'Uttarayana, Shukla Paksha Dwitiya, Tritiya, Panchami, Dashami',
-    image: 'https://images.unsplash.com/photo-1545232979-fbf68fe9b1af?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/rituals/vastu-puja.jpg',
     accentColor: '#2D5A3F',
     prepTimeline: [
       {
@@ -793,7 +793,7 @@ const BASE_RITUALS: Ritual[] = [
     typicalDuration: '3 Hours',
     idealTime: 'Pratah Kalam (Morning) or Godhuli Vela on Shravana Friday',
     auspiciousTithi: 'Shukla Paksha Friday before Shravana Purnima',
-    image: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/rituals/varalakshmi-vrata.jpg',
     accentColor: '#C59B27',
     prepTimeline: [
       {

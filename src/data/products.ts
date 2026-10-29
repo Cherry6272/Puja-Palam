@@ -323,7 +323,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: '6 months',
     storage: 'Airtight container in a cool place.',
     usedInRituals: ['satyanarayana-puja', 'varalakshmi-vrata', 'griha-pravesh'],
-    image: 'https://images.unsplash.com/photo-1615865417491-9941019fbc00?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/dry-fruits-pancha-meva.svg',
     boxSequence: 3,
   },
   {
@@ -345,7 +345,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: 'Lifetime',
     storage: 'Wipe with dry cloth.',
     usedInRituals: ['satyanarayana-puja', 'ganapati-puja'],
-    image: 'https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/brass-agarbatti-stand.svg',
     boxSequence: 4,
   },
   {
@@ -367,7 +367,7 @@ export const SAMAGRI_PRODUCTS: SamagriProduct[] = [
     shelfLife: 'Lifetime',
     storage: 'Wipe with dry cloth. Do not soak in water.',
     usedInRituals: ['satyanarayana-puja', 'varalakshmi-vrata', 'ganapati-puja'],
-    image: 'https://images.unsplash.com/photo-1594040226829-7f251ab46d80?auto=format&fit=crop&w=600&q=80',
+    image: '/images/products/traditional-mango-wood-peeta.svg',
     boxSequence: 1,
   }
 ];

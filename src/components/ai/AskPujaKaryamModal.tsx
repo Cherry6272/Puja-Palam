@@ -266,7 +266,7 @@ export const AskPujaKaryamModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
               {/* Items Manifest */}
               <div>
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 space-y-1 sm:space-y-0">
                   <h5 className="text-xs font-bold text-temple-800 uppercase tracking-wider">
                     Required Procurement Manifest ({result.requiredItems.filter((i) => !i.isOwned).length} Items)
                   </h5>
@@ -280,19 +280,19 @@ export const AskPujaKaryamModal: React.FC<Props> = ({ isOpen, onClose }) => {
                       key={i}
                       className={`flex items-center justify-between text-xs px-3 py-2 rounded-lg border ${
                         item.isOwned
-                          ? 'bg-tulsi-50/40 border-tulsi-200 text-temple-500 line-through'
+                          ? 'bg-tulsi-50/40 border-tulsi-200 text-temple-500'
                           : 'bg-white border-sandalwood-200 text-temple-800'
                       }`}
                     >
                       <div className="flex items-center space-x-2">
                         {item.isOwned ? (
-                          <span className="text-[10px] bg-tulsi-100 text-tulsi-800 px-1.5 py-0.5 rounded font-bold not-italic">
+                          <span className="text-[10px] bg-tulsi-100 text-tulsi-800 px-1.5 py-0.5 rounded font-bold not-italic no-underline">
                             Already Owned
                           </span>
                         ) : (
                           <span className="w-1.5 h-1.5 rounded-full bg-brass-500" />
                         )}
-                        <span>{item.name}</span>
+                        <span className={item.isOwned ? 'line-through' : ''}>{item.name}</span>
                       </div>
                       <span className="font-semibold text-temple-700">
                         {item.quantity} {item.unit}

@@ -7,9 +7,9 @@ import { FESTIVALS_DATA } from '@/data/festivals';
 const isClient = typeof window !== 'undefined';
 
 const STORAGE_KEYS = {
-  PRODUCTS: 'pk_products_data_v2',
-  RITUALS: 'pk_rituals_data_v2',
-  FESTIVALS: 'pk_festivals_data_v2',
+  PRODUCTS: 'pk_products_data_v3',
+  RITUALS: 'pk_rituals_data_v3',
+  FESTIVALS: 'pk_festivals_data_v3',
   ORDERS: 'pk_orders_data_v2',
 };
 

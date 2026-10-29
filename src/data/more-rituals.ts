@@ -13,7 +13,7 @@ export const MORE_RITUALS: Ritual[] = [
     typicalDuration: '1.5 – 2 Hours',
     idealTime: 'Pratah Kalam on Moola Nakshatra',
     auspiciousTithi: 'Navaratri Saptami/Ashtami/Navami or Vasant Panchami',
-    image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/rituals/saraswati-puja.jpg',
     accentColor: '#F5F5F5',
     prepTimeline: [],
     tiers: {
@@ -68,7 +68,7 @@ export const MORE_RITUALS: Ritual[] = [
     typicalDuration: '1 Hour',
     idealTime: 'Maha Navami',
     auspiciousTithi: 'Navaratri Navami',
-    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/rituals/ayudha-puja.jpg',
     accentColor: '#B33927',
     prepTimeline: [],
     tiers: {
@@ -123,7 +123,7 @@ export const MORE_RITUALS: Ritual[] = [
     typicalDuration: '2 Hours',
     idealTime: 'Pradosha Kalam or Godhuli Vela',
     auspiciousTithi: 'Deepavali Amavasya or Dhanteras',
-    image: 'https://images.unsplash.com/photo-1615865417491-9941019fbc00?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/rituals/lakshmi-kubera.jpg',
     accentColor: '#C59B27',
     prepTimeline: [],
     tiers: {
@@ -178,7 +178,7 @@ export const MORE_RITUALS: Ritual[] = [
     typicalDuration: '3 Hours',
     idealTime: 'Morning',
     auspiciousTithi: 'As prescribed by astrologer',
-    image: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/rituals/navagraha-shanti.svg',
     accentColor: '#2D5A3F',
     prepTimeline: [],
     tiers: {

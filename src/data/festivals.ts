@@ -21,7 +21,7 @@ export const FESTIVALS_DATA: Festival[] = [
     featuredRituals: ['varalakshmi-vrata', 'satyanarayana-puja'],
     featuredKits: ['varalakshmi-vrata'],
     essentialProducts: ['madurai-temple-kumkum', 'salem-turmeric-powder', 'brass-kalasha-vessel', 'brass-kuthuvilakku-pair'],
-    heroImage: 'https://images.unsplash.com/photo-lKb4ou94fXg?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/images/rituals/varalakshmi-vratam.jpg',
     culturalTraditionNotes: [
       {
         region: 'Karnataka',
@@ -60,7 +60,7 @@ export const FESTIVALS_DATA: Festival[] = [
     featuredRituals: ['ganapati-puja', 'satyanarayana-puja'],
     featuredKits: ['ganapati-puja'],
     essentialProducts: ['bhimseni-camphor', 'madurai-temple-kumkum', 'salem-turmeric-powder', 'panchapatra-achamani-spoon'],
-    heroImage: 'https://images.unsplash.com/photo-1567591414240-e18e69888806?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/images/rituals/ganesha-chaturti.jpg',
     culturalTraditionNotes: [
       {
         region: 'Karnataka',
@@ -99,7 +99,7 @@ export const FESTIVALS_DATA: Festival[] = [
     featuredRituals: ['varalakshmi-vrata', 'ganapati-puja'],
     featuredKits: ['varalakshmi-vrata'],
     essentialProducts: ['salem-turmeric-powder', 'madurai-temple-kumkum', 'cow-ghee-diya-wicks', 'navadhanya-kit'],
-    heroImage: 'https://images.unsplash.com/photo-0BRMUqgJVjo?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/images/rituals/deepavali.jpg',
     culturalTraditionNotes: [
       {
         region: 'Karnataka',
@@ -133,7 +133,7 @@ export const FESTIVALS_DATA: Festival[] = [
     featuredRituals: ['satyanarayana-puja'],
     featuredKits: ['satyanarayana-puja'],
     essentialProducts: ['cow-ghee-diya-wicks', 'bhimseni-camphor', 'brass-kalasha-vessel'],
-    heroImage: 'https://images.unsplash.com/photo-K-tVxCdqMLs?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/images/rituals/dussehra.jpg',
     culturalTraditionNotes: [
       {
         region: 'Tamil Nadu',
@@ -172,7 +172,7 @@ export const FESTIVALS_DATA: Festival[] = [
     featuredRituals: ['varalakshmi-vrata', 'ganapati-puja'],
     featuredKits: ['varalakshmi-vrata'],
     essentialProducts: ['salem-turmeric-powder', 'madurai-temple-kumkum', 'bhimseni-camphor', 'brass-kuthuvilakku-pair'],
-    heroImage: 'https://images.unsplash.com/photo-M3nSVCteeOQ?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/images/rituals/sankranti.jpg',
     culturalTraditionNotes: [
       {
         region: 'Karnataka',
@@ -211,7 +211,7 @@ export const FESTIVALS_DATA: Festival[] = [
     featuredRituals: ['satyanarayana-puja', 'varalakshmi-vrata'],
     featuredKits: ['satyanarayana-puja'],
     essentialProducts: ['cow-ghee-diya-wicks', 'brass-kuthuvilakku-pair', 'bhimseni-camphor'],
-    heroImage: 'https://images.unsplash.com/photo-iMeicjsZvrY?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/images/rituals/krishna-janmashtami.jpg',
     culturalTraditionNotes: [
       {
         region: 'Tamil Nadu',
@@ -248,7 +248,7 @@ export const FESTIVALS_DATA: Festival[] = [
     featuredRituals: ['satyanarayana-puja', 'ganapati-puja'],
     featuredKits: ['satyanarayana-puja'],
     essentialProducts: ['salem-turmeric-powder', 'madurai-temple-kumkum', 'brass-kalasha-vessel'],
-    heroImage: 'https://images.unsplash.com/photo--lCLSsESaMA?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/images/rituals/ugadi.jpg',
     culturalTraditionNotes: [
       {
         region: 'Karnataka',
@@ -280,7 +280,7 @@ export const FESTIVALS_DATA: Festival[] = [
     featuredRituals: ['ganapati-puja'],
     featuredKits: ['ganapati-puja'],
     essentialProducts: ['brass-kuthuvilakku-pair', 'panchapatra-achamani-spoon', 'bhimseni-camphor'],
-    heroImage: 'https://images.unsplash.com/photo-DoFJedWj85k?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/images/rituals/puthandu.jpg',
     culturalTraditionNotes: [
       {
         region: 'Kerala',
@@ -309,7 +309,7 @@ export const FESTIVALS_DATA: Festival[] = [
     featuredRituals: ['satyanarayana-puja', 'ganapati-puja'],
     featuredKits: ['satyanarayana-puja'],
     essentialProducts: ['salem-turmeric-powder', 'brass-kalasha-vessel', 'cow-ghee-diya-wicks'],
-    heroImage: 'https://images.unsplash.com/photo-bzZU5GzzRZ4?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/images/rituals/vishu.jpg',
     culturalTraditionNotes: [
       {
         region: 'Tamil Nadu',
@@ -345,7 +345,7 @@ export const FESTIVALS_DATA: Festival[] = [
     featuredRituals: ['ganapati-puja'],
     featuredKits: ['ganapati-puja'],
     essentialProducts: ['madurai-temple-kumkum', 'salem-turmeric-powder', 'brass-kuthuvilakku-pair'],
-    heroImage: 'https://images.unsplash.com/photo-GnMPlrfmxOw?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/images/rituals/gowri-fest.jpg',
     culturalTraditionNotes: [
       {
         region: 'Tamil Nadu',

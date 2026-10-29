@@ -35,7 +35,7 @@ export default function SamagriPage() {
       sorted.sort((a, b) => b.price - a.price);
     }
     return sorted;
-  }, [selectedCategory, sortBy]);
+  }, [selectedCategory, sortBy, SAMAGRI_PRODUCTS]);
 
   return (
     <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">

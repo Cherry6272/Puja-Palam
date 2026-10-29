@@ -59,7 +59,7 @@ function SearchPageContent() {
       festivals: matchedFestivals,
       totalCount: matchedRituals.length + matchedProducts.length + matchedFestivals.length,
     };
-  }, [initialQuery]);
+  }, [initialQuery, RITUALS_DATA, SAMAGRI_PRODUCTS, FESTIVALS_DATA]);
 
   const suggestionPills = [
     'Bhimseni Camphor',

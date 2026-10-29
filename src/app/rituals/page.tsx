@@ -18,7 +18,7 @@ export default function RitualsIndexPage() {
   const filteredRituals = useMemo(() => {
     if (selectedCategory === 'All') return RITUALS_DATA;
     return RITUALS_DATA.filter((r) => r.category === selectedCategory);
-  }, [selectedCategory]);
+  }, [selectedCategory, RITUALS_DATA]);
 
   return (
     <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">

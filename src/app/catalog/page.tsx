@@ -30,7 +30,7 @@ function CatalogContent() {
   const filteredProducts = useMemo(() => {
     if (selectedCategory === 'All') return SAMAGRI_PRODUCTS;
     return SAMAGRI_PRODUCTS.filter((p) => p.category === selectedCategory);
-  }, [selectedCategory]);
+  }, [selectedCategory, SAMAGRI_PRODUCTS]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
