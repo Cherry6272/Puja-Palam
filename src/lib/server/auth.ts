@@ -119,3 +119,4 @@ export async function setAdminSessionCookie(token: string): Promise<void> {
 export async function clearAdminSessionCookie(): Promise<void> {
   cookies().delete(SESSION_COOKIE_NAME);
 }
+

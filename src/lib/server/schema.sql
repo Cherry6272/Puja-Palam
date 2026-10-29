@@ -91,3 +91,4 @@ CREATE INDEX IF NOT EXISTS idx_products_category ON products(category);
 CREATE INDEX IF NOT EXISTS idx_products_instock ON products(in_stock);
 CREATE INDEX IF NOT EXISTS idx_rituals_category ON rituals(category);
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC);
+
