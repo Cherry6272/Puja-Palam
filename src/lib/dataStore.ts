@@ -3,226 +3,401 @@ import { SAMAGRI_PRODUCTS } from '@/data/products';
 import { RITUALS_DATA } from '@/data/rituals';
 import { FESTIVALS_DATA } from '@/data/festivals';
 
-// Helper for safe client-side localStorage access
+export interface CustomerSummary {
+  name: string;
+  phone: string;
+  email: string;
+  city: string;
+  orderCount: number;
+  totalSpent: number;
+  lastOrderDate: string;
+}
+
+export interface OperationalStats {
+  totalOrders: number;
+  totalRevenue: number;
+  kitsCreated: number;
+  productsSold: number;
+  activeProductsCount: number;
+  activeRitualsCount: number;
+  activeFestivalsCount: number;
+  lowStockCount: number;
+  lowStockProducts: SamagriProduct[];
+  outOfStockCount: number;
+  outOfStockProducts: SamagriProduct[];
+  dbStatus?: any;
+}
+
 const isClient = typeof window !== 'undefined';
 
-const STORAGE_KEYS = {
-  PRODUCTS: 'pk_products_data_v3',
-  RITUALS: 'pk_rituals_data_v3',
-  FESTIVALS: 'pk_festivals_data_v3',
-  ORDERS: 'pk_orders_data_v2',
-};
+// In-memory cache
+let cachedProducts: SamagriProduct[] = SAMAGRI_PRODUCTS;
+let cachedRituals: Ritual[] = RITUALS_DATA;
+let cachedFestivals: Festival[] = FESTIVALS_DATA;
+let cachedOrders: PlacedOrder[] = [];
+let cachedStats: OperationalStats | null = null;
+let cachedDbStatus: any = null;
+
+type Listener = () => void;
+const listeners = new Set<Listener>();
+
+function notifyListeners() {
+  listeners.forEach((listener) => {
+    try {
+      listener();
+    } catch (e) {
+      console.error('Error in dataStore listener:', e);
+    }
+  });
+}
 
 export const dataStore = {
+  subscribe(listener: Listener): () => void {
+    listeners.add(listener);
+    return () => {
+      listeners.delete(listener);
+    };
+  },
+
+  async fetchLatest(): Promise<{
+    products: SamagriProduct[];
+    rituals: Ritual[];
+    festivals: Festival[];
+    orders: PlacedOrder[];
+    customers: CustomerSummary[];
+    stats: OperationalStats;
+    dbStatus: any;
+  }> {
+    if (!isClient) {
+      return {
+        products: cachedProducts,
+        rituals: cachedRituals,
+        festivals: cachedFestivals,
+        orders: cachedOrders,
+        customers: this.getCustomers(),
+        stats: this.getOperationalStats(),
+        dbStatus: cachedDbStatus,
+      };
+    }
+
+    try {
+      const res = await fetch('/api/data', { cache: 'no-store' });
+      if (!res.ok) {
+        throw new Error(`Data fetch failed with status ${res.status}`);
+      }
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.error || 'Server reported failure loading data');
+      }
+
+      if (Array.isArray(data.products) && data.products.length > 0) {
+        cachedProducts = data.products;
+      }
+      if (Array.isArray(data.rituals) && data.rituals.length > 0) {
+        cachedRituals = data.rituals;
+      }
+      if (Array.isArray(data.festivals) && data.festivals.length > 0) {
+        cachedFestivals = data.festivals;
+      }
+      if (Array.isArray(data.orders)) {
+        cachedOrders = data.orders;
+      }
+      if (data.stats) {
+        cachedStats = data.stats;
+      }
+      if (data.dbStatus) {
+        cachedDbStatus = data.dbStatus;
+      }
+
+      notifyListeners();
+
+      return {
+        products: cachedProducts,
+        rituals: cachedRituals,
+        festivals: cachedFestivals,
+        orders: cachedOrders,
+        customers: this.getCustomers(),
+        stats: this.getOperationalStats(),
+        dbStatus: cachedDbStatus,
+      };
+    } catch (err) {
+      console.warn('dataStore.fetchLatest network warning, using cached memory state:', err);
+      return {
+        products: cachedProducts,
+        rituals: cachedRituals,
+        festivals: cachedFestivals,
+        orders: cachedOrders,
+        customers: this.getCustomers(),
+        stats: this.getOperationalStats(),
+        dbStatus: cachedDbStatus,
+      };
+    }
+  },
+
   // PRODUCTS
   getProducts(): SamagriProduct[] {
-    if (!isClient) return SAMAGRI_PRODUCTS;
-    try {
-      const stored = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
-      if (stored) return JSON.parse(stored);
-      // Initialize with default
-      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(SAMAGRI_PRODUCTS));
-      return SAMAGRI_PRODUCTS;
-    } catch {
-      return SAMAGRI_PRODUCTS;
-    }
+    return cachedProducts;
   },
 
   getProductBySlug(slug: string): SamagriProduct | undefined {
-    const products = this.getProducts();
-    return products.find((p) => p.slug === slug || p.id === slug);
+    return cachedProducts.find((p) => p.slug === slug || p.id === slug);
   },
 
-  updateProduct(updated: SamagriProduct): void {
-    if (!isClient) return;
-    const products = this.getProducts();
-    const index = products.findIndex((p) => p.id === updated.id);
+  async updateProduct(updated: SamagriProduct): Promise<void> {
+    const index = cachedProducts.findIndex((p) => p.id === updated.id);
     if (index !== -1) {
-      products[index] = updated;
+      cachedProducts[index] = updated;
     } else {
-      products.unshift(updated);
+      cachedProducts.unshift(updated);
     }
-    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+    notifyListeners();
+
+    if (isClient) {
+      try {
+        await fetch('/api/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated),
+        });
+      } catch (err) {
+        console.error('Failed to sync product update to server:', err);
+      }
+    }
   },
 
-  addProduct(newProduct: SamagriProduct): void {
-    if (!isClient) return;
-    const products = this.getProducts();
-    products.unshift(newProduct);
-    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+  async addProduct(newProduct: SamagriProduct): Promise<void> {
+    cachedProducts.unshift(newProduct);
+    notifyListeners();
+
+    if (isClient) {
+      try {
+        await fetch('/api/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newProduct),
+        });
+      } catch (err) {
+        console.error('Failed to sync new product to server:', err);
+      }
+    }
   },
 
-  deleteProduct(productId: string): void {
-    if (!isClient) return;
-    const products = this.getProducts().filter((p) => p.id !== productId);
-    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+  async deleteProduct(productId: string): Promise<void> {
+    cachedProducts = cachedProducts.filter((p) => p.id !== productId);
+    notifyListeners();
+
+    if (isClient) {
+      try {
+        await fetch(`/api/products?id=${encodeURIComponent(productId)}`, {
+          method: 'DELETE',
+        });
+      } catch (err) {
+        console.error('Failed to sync delete product to server:', err);
+      }
+    }
   },
 
-  updateProductStock(productId: string, hub: 'blr' | 'maa' | 'hyd', delta: number): void {
-    if (!isClient) return;
-    const products = this.getProducts();
-    const item = products.find((p) => p.id === productId);
+  async updateProductStock(productId: string, hub: 'blr' | 'maa' | 'hyd', delta: number): Promise<void> {
+    const item = cachedProducts.find((p) => p.id === productId);
     if (item) {
       item.inventoryByHub[hub] = Math.max(0, (item.inventoryByHub[hub] || 0) + delta);
       item.inStock = item.inventoryByHub.blr + item.inventoryByHub.maa + item.inventoryByHub.hyd > 0;
-      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+      notifyListeners();
+    }
+
+    if (isClient) {
+      try {
+        await fetch('/api/stock', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: productId, hub, delta }),
+        });
+      } catch (err) {
+        console.error('Failed to sync stock update to server:', err);
+      }
     }
   },
 
   // RITUALS
   getRituals(): Ritual[] {
-    if (!isClient) return RITUALS_DATA;
-    try {
-      const stored = localStorage.getItem(STORAGE_KEYS.RITUALS);
-      if (stored) return JSON.parse(stored);
-      localStorage.setItem(STORAGE_KEYS.RITUALS, JSON.stringify(RITUALS_DATA));
-      return RITUALS_DATA;
-    } catch {
-      return RITUALS_DATA;
-    }
+    return cachedRituals;
   },
 
   getRitualBySlug(slug: string): Ritual | undefined {
-    const rituals = this.getRituals();
-    return rituals.find((r) => r.slug === slug || r.id === slug);
+    return cachedRituals.find((r) => r.slug === slug || r.id === slug);
   },
 
-  updateRitual(updated: Ritual): void {
-    if (!isClient) return;
-    const rituals = this.getRituals();
-    const index = rituals.findIndex((r) => r.id === updated.id);
+  async updateRitual(updated: Ritual): Promise<void> {
+    const index = cachedRituals.findIndex((r) => r.id === updated.id);
     if (index !== -1) {
-      rituals[index] = updated;
+      cachedRituals[index] = updated;
     } else {
-      rituals.unshift(updated);
+      cachedRituals.unshift(updated);
     }
-    localStorage.setItem(STORAGE_KEYS.RITUALS, JSON.stringify(rituals));
+    notifyListeners();
+
+    if (isClient) {
+      try {
+        await fetch('/api/rituals', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated),
+        });
+      } catch (err) {
+        console.error('Failed to sync ritual update to server:', err);
+      }
+    }
   },
-
-
 
   // FESTIVALS
   getFestivals(): Festival[] {
-    if (!isClient) return FESTIVALS_DATA;
-    try {
-      const stored = localStorage.getItem(STORAGE_KEYS.FESTIVALS);
-      if (stored) return JSON.parse(stored);
-      localStorage.setItem(STORAGE_KEYS.FESTIVALS, JSON.stringify(FESTIVALS_DATA));
-      return FESTIVALS_DATA;
-    } catch {
-      return FESTIVALS_DATA;
-    }
+    return cachedFestivals;
   },
 
   getFestivalBySlug(slug: string): Festival | undefined {
-    const festivals = this.getFestivals();
-    return festivals.find((f) => f.slug === slug || f.id === slug);
+    return cachedFestivals.find((f) => f.slug === slug || f.id === slug);
   },
 
-  updateFestival(updated: Festival): void {
-    if (!isClient) return;
-    const festivals = this.getFestivals();
-    const index = festivals.findIndex((f) => f.id === updated.id);
+  async updateFestival(updated: Festival): Promise<void> {
+    const index = cachedFestivals.findIndex((f) => f.id === updated.id);
     if (index !== -1) {
-      festivals[index] = updated;
+      cachedFestivals[index] = updated;
     } else {
-      festivals.unshift(updated);
+      cachedFestivals.unshift(updated);
     }
-    localStorage.setItem(STORAGE_KEYS.FESTIVALS, JSON.stringify(festivals));
+    notifyListeners();
+
+    if (isClient) {
+      try {
+        await fetch('/api/festivals', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated),
+        });
+      } catch (err) {
+        console.error('Failed to sync festival update to server:', err);
+      }
+    }
   },
 
   // ORDERS
   getOrders(): PlacedOrder[] {
-    if (!isClient) return [];
-    try {
-      const stored = localStorage.getItem(STORAGE_KEYS.ORDERS);
-      if (stored) return JSON.parse(stored);
-      // Check legacy single order key
-      const legacyOrder = localStorage.getItem('pk_last_placed_order');
-      if (legacyOrder) {
-        const parsed = [JSON.parse(legacyOrder)];
-        localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(parsed));
-        return parsed;
-      }
-      return [];
-    } catch {
-      return [];
-    }
+    return cachedOrders;
   },
 
   getOrderById(orderId: string): PlacedOrder | undefined {
-    const orders = this.getOrders();
-    return orders.find((o) => o.orderId === orderId);
+    return cachedOrders.find((o) => o.orderId === orderId);
   },
 
-  addOrder(order: PlacedOrder): void {
-    if (!isClient) return;
-    const orders = this.getOrders();
-    // Prevent duplicate
-    if (!orders.some((o) => o.orderId === order.orderId)) {
-      orders.unshift(order);
-      localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
-      localStorage.setItem('pk_last_placed_order', JSON.stringify(order));
+  async addOrder(order: PlacedOrder): Promise<{ success: boolean; error?: string }> {
+    if (!order || !order.orderId) {
+      return { success: false, error: 'Invalid order structure' };
+    }
+
+    if (!isClient) {
+      cachedOrders.unshift(order);
+      return { success: true };
+    }
+
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order),
+      });
+
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error || `Order persistence failed with status ${res.status}`);
+      }
+
+      const resData = await res.json();
+      if (!resData.success) {
+        throw new Error(resData.error || 'Server rejected order persistence');
+      }
+
+      // Add to local cache
+      if (!cachedOrders.some((o) => o.orderId === order.orderId)) {
+        cachedOrders.unshift(order);
+      }
+
+      // Deduct inventory optimistically
+      if (Array.isArray(order.products)) {
+        for (const item of order.products) {
+          if (item?.product?.id) {
+            const city = (order.customer.city || '').toLowerCase();
+            const hub: 'blr' | 'maa' | 'hyd' = city.includes('chennai')
+              ? 'maa'
+              : city.includes('hyderabad')
+              ? 'hyd'
+              : 'blr';
+            const prod = cachedProducts.find((p) => p.id === item.product.id);
+            if (prod) {
+              prod.inventoryByHub[hub] = Math.max(0, (prod.inventoryByHub[hub] || 0) - item.quantity);
+              prod.inStock = prod.inventoryByHub.blr + prod.inventoryByHub.maa + prod.inventoryByHub.hyd > 0;
+            }
+          }
+        }
+      }
+
+      notifyListeners();
+      return { success: true };
+    } catch (err: any) {
+      console.error('Failed to persist order to server:', err);
+      return { success: false, error: err?.message || 'Server database write failed' };
     }
   },
 
-  updateOrderBoxStatus(
+  async updateOrderBoxStatus(
     orderId: string,
     boxKey: 'box1' | 'box2' | 'box3' | 'box4',
     newStatus: string
-  ): void {
-    if (!isClient) return;
-    const orders = this.getOrders();
-    const order = orders.find((o) => o.orderId === orderId);
+  ): Promise<void> {
+    const order = cachedOrders.find((o) => o.orderId === orderId);
     if (order && order.boxSequenceStatus) {
       order.boxSequenceStatus[boxKey] = newStatus;
-      localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
+      notifyListeners();
+    }
+
+    if (isClient) {
+      try {
+        await fetch('/api/orders', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId, boxKey, newStatus }),
+        });
+      } catch (err) {
+        console.error('Failed to sync order box status to server:', err);
+      }
     }
   },
 
-  // CUSTOMERS (Derived from real orders)
-  getCustomers(): Array<{
-    name: string;
-    phone: string;
-    email: string;
-    city: string;
-    orderCount: number;
-    totalSpent: number;
-    lastOrderDate: string;
-  }> {
-    const orders = this.getOrders();
-    const customerMap = new Map<string, {
-      name: string;
-      phone: string;
-      email: string;
-      city: string;
-      orderCount: number;
-      totalSpent: number;
-      lastOrderDate: string;
-    }>();
+  // CUSTOMERS
+  getCustomers(): CustomerSummary[] {
+    const customerMap = new Map<string, CustomerSummary>();
 
-    orders.forEach((o) => {
+    cachedOrders.forEach((o) => {
       if (!o || !o.customer) return;
       const email = o.customer.email || '';
       const phone = o.customer.phone || '';
       const key = email.toLowerCase() || phone;
       if (!key) return;
-      
+
       const existing = customerMap.get(key);
       if (existing) {
         existing.orderCount += 1;
-        existing.totalSpent += o.total;
+        existing.totalSpent += o.total || 0;
         if (new Date(o.createdAt) > new Date(existing.lastOrderDate)) {
           existing.lastOrderDate = o.createdAt;
         }
       } else {
         customerMap.set(key, {
-          name: o.customer.name || 'Unknown',
-          phone: phone,
-          email: email,
+          name: o.customer.name || 'Customer',
+          phone,
+          email,
           city: o.customer.city || 'Unknown',
           orderCount: 1,
-          totalSpent: o.total,
+          totalSpent: o.total || 0,
           lastOrderDate: o.createdAt,
         });
       }
@@ -232,32 +407,26 @@ export const dataStore = {
   },
 
   // OPERATIONAL STATS
-  getOperationalStats() {
-    const orders = this.getOrders();
-    const products = this.getProducts();
-    const rituals = this.getRituals();
-    const festivals = this.getFestivals();
+  getOperationalStats(): OperationalStats {
+    const orders = cachedOrders;
+    const products = cachedProducts;
+    const rituals = cachedRituals;
+    const festivals = cachedFestivals;
 
-    // Calculate real revenue
-    const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0);
-
-    // Calculate kits created in orders
+    const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
     const kitsCount = orders.reduce((sum, o) => sum + (o.kits ? o.kits.length : 0), 0);
-
-    // Calculate individual products sold
     const productsCount = orders.reduce(
-      (sum, o) => sum + (o.products ? o.products.reduce((acc, p) => acc + p.quantity, 0) : 0),
+      (sum, o) => sum + (o.products ? o.products.reduce((acc, p) => acc + (p.quantity || 1), 0) : 0),
       0
     );
 
-    // Inventory alerts
     const lowStockProducts = products.filter((p) => {
-      const totalUnits = p.inventoryByHub.blr + p.inventoryByHub.maa + p.inventoryByHub.hyd;
+      const totalUnits = (p.inventoryByHub?.blr || 0) + (p.inventoryByHub?.maa || 0) + (p.inventoryByHub?.hyd || 0);
       return totalUnits > 0 && totalUnits < 400;
     });
 
     const outOfStockProducts = products.filter((p) => {
-      const totalUnits = p.inventoryByHub.blr + p.inventoryByHub.maa + p.inventoryByHub.hyd;
+      const totalUnits = (p.inventoryByHub?.blr || 0) + (p.inventoryByHub?.maa || 0) + (p.inventoryByHub?.hyd || 0);
       return totalUnits === 0 || !p.inStock;
     });
 
@@ -273,6 +442,7 @@ export const dataStore = {
       lowStockProducts,
       outOfStockCount: outOfStockProducts.length,
       outOfStockProducts,
+      dbStatus: cachedDbStatus,
     };
   },
 };

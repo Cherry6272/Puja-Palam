@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDataStore } from '@/hooks/useDataStore';
 import { notFound, useParams } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
+import { RegionalTradition } from '@/types';
 import Link from 'next/link';
 import { 
   Compass, 
@@ -24,8 +25,20 @@ export default function RitualDetailPage() {
   const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA, isLoading } = useDataStore();
 
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = params?.slug as string;
   const { addCustomizedKit } = useCart();
+
+  const [selectedTierKey, setSelectedTierKey] = useState<'essential' | 'complete' | 'premium'>('complete');
+  const [selectedTraditionId, setSelectedTraditionId] = useState<RegionalTradition>('karnataka-smartha');
+
+  const ritual = RITUALS_DATA.find((r) => r.slug === slug);
+
+  // Synchronize default tradition when ritual data is loaded
+  useEffect(() => {
+    if (ritual?.traditions?.[0]?.id) {
+      setSelectedTraditionId(ritual.traditions[0].id as RegionalTradition);
+    }
+  }, [ritual]);
 
   if (isLoading) {
     return (
@@ -35,15 +48,11 @@ export default function RitualDetailPage() {
     );
   }
 
-  const ritual = RITUALS_DATA.find((r) => r.slug === slug);
   if (!ritual) {
     return notFound();
   }
 
-  const [selectedTierKey, setSelectedTierKey] = useState<'essential' | 'complete' | 'premium'>('complete');
-  const [selectedTraditionId, setSelectedTraditionId] = useState(ritual.traditions[0]?.id || 'karnataka-smartha');
-
-  const activeTier = ritual.tiers[selectedTierKey];
+  const activeTier = ritual.tiers[selectedTierKey] || ritual.tiers.complete || ritual.tiers.essential;
 
   const handleQuickProcure = () => {
     addCustomizedKit({

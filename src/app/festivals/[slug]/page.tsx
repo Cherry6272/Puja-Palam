@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useDataStore } from '@/hooks/useDataStore';
 import { notFound, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { dataStore } from '@/lib/dataStore';
 import { useCart } from '@/context/CartContext';
 import { 
   Calendar, 
@@ -25,8 +24,12 @@ export default function FestivalDetailPage() {
   const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA, isLoading } = useDataStore();
 
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = params?.slug as string;
   const { addProduct, addCustomizedKit } = useCart();
+  const [selectedRegionIndex, setSelectedRegionIndex] = useState(0);
+
+  const cleanedSlug = slug ? slug.replace(/-vratam$/, '-vrata') : '';
+  const festival = FESTIVALS_DATA.find((f) => f.slug === slug || f.slug === cleanedSlug);
 
   if (isLoading) {
     return (
@@ -36,25 +39,20 @@ export default function FestivalDetailPage() {
     );
   }
 
-  const festival = FESTIVALS_DATA.find((f) => f.slug === slug);
   if (!festival) {
     return notFound();
   }
 
-  const [selectedRegionIndex, setSelectedRegionIndex] = useState(0);
   const activeTradition = festival.culturalTraditionNotes[selectedRegionIndex] || festival.culturalTraditionNotes[0];
 
   // Resolve associated products and rituals
-  const products = dataStore.getProducts();
-  const rituals = dataStore.getRituals();
-
-  const essentialProducts = products.filter((p) =>
+  const essentialProducts = SAMAGRI_PRODUCTS.filter((p) =>
     festival.essentialProducts.includes(p.slug) || festival.essentialProducts.includes(p.id)
   );
 
-  const featuredRitual = rituals.find((r) =>
+  const featuredRitual = RITUALS_DATA.find((r) =>
     festival.featuredRituals.includes(r.slug) || festival.featuredRituals.includes(r.id)
-  ) || rituals[0];
+  ) || RITUALS_DATA[0];
 
   const handleQuickAddProduct = (product: any) => {
     addProduct(product);

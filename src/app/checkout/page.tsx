@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
 import { dataStore } from '@/lib/dataStore';
+import { PlacedOrder } from '@/types';
 import { 
   ShieldCheck, 
   Truck, 
@@ -21,20 +22,44 @@ export default function CheckoutPage() {
   const { cartKits, cartProducts, totalAmount, totalSavings, totalItemsCount, clearCart } = useCart();
 
   const [formData, setFormData] = useState({
-    name: 'Suresh Raghavan',
-    phone: '9845012345',
-    email: 'suresh.raghavan@example.com',
-    address: 'Flat 402, Shravani Heritage, 12th Main Road, Indiranagar',
-    city: 'Bengaluru',
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    city: '',
     state: 'Karnataka',
-    pincode: '560038',
-    ritualDate: '2026-09-18',
+    pincode: '',
+    ritualDate: '',
     deliverySlot: 'morning-consecrated',
-    notes: 'Please ensure fresh mango leaves are packed on the delivery morning.',
+    notes: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // Safely restore previously saved customer record if one genuinely exists
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('pk_saved_customer');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') {
+          setFormData((prev) => ({
+            ...prev,
+            name: parsed.name || '',
+            phone: parsed.phone || '',
+            email: parsed.email || '',
+            address: parsed.address || '',
+            city: parsed.city || '',
+            pincode: parsed.pincode || '',
+          }));
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
 
   // If cart is empty, show empty redirect
   if (totalItemsCount === 0) {
@@ -61,32 +86,50 @@ export default function CheckoutPage() {
 
   const validateForm = () => {
     const errs: Record<string, string> = {};
-    if (!formData.name.trim()) errs.name = 'Full name is required.';
-    if (!formData.phone.trim()) {
+    if (!formData.name.trim() || formData.name.trim().length < 2) {
+      errs.name = 'Full name is required (minimum 2 characters).';
+    }
+
+    const cleanPhone = formData.phone.replace(/[\s-]/g, '');
+    if (!cleanPhone) {
       errs.phone = 'Mobile phone number is required.';
-    } else if (!/^\+?[0-9]{10,12}$/.test(formData.phone.replace(/[\s-]/g, ''))) {
+    } else if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
       errs.phone = 'Please enter a valid 10-digit mobile number.';
     }
-    if (!formData.email.trim() || !formData.email.includes('@')) {
-      errs.email = 'A valid email address is required for receipt & digital QR companion.';
+
+    if (!formData.email.trim()) {
+      errs.email = 'A valid email address is required for receipt & digital companion.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      errs.email = 'Please enter a valid email address.';
     }
-    if (!formData.address.trim()) errs.address = 'Delivery address is required.';
-    if (!formData.city.trim()) errs.city = 'City is required.';
-    if (!formData.pincode.trim() || formData.pincode.length < 6) {
-      errs.pincode = 'Valid 6-digit Pincode is required.';
+
+    if (!formData.address.trim() || formData.address.trim().length < 5) {
+      errs.address = 'Delivery address is required (minimum 5 characters).';
     }
+
+    if (!formData.city.trim()) {
+      errs.city = 'City is required.';
+    }
+
+    if (!formData.pincode.trim() || !/^[1-9]\d{5}$/.test(formData.pincode.trim())) {
+      errs.pincode = 'Valid 6-digit Indian Pincode is required.';
+    }
+
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
 
-  const handlePlaceOrder = (e: React.FormEvent) => {
+  const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return; // Prevent repeated submissions
+    setSubmitError(null);
+
     if (!validateForm()) return;
 
     setIsSubmitting(true);
 
     const orderId = `PK-${Math.floor(10000 + Math.random() * 90000)}`;
-    const placedOrder = {
+    const placedOrder: PlacedOrder = {
       orderId,
       createdAt: new Date().toISOString(),
       customer: formData,
@@ -109,16 +152,29 @@ export default function CheckoutPage() {
       },
     };
 
+    const res = await dataStore.addOrder(placedOrder);
+    if (!res.success) {
+      setSubmitError(res.error || 'Failed to place order. Database write failed.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Save customer preferences locally for convenience on future checkouts
     try {
-      dataStore.addOrder(placedOrder);
+      localStorage.setItem('pk_saved_customer', JSON.stringify({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        address: formData.address,
+        city: formData.city,
+        pincode: formData.pincode,
+      }));
     } catch {
       // ignore
     }
 
-    setTimeout(() => {
-      clearCart();
-      router.push(`/order-success?orderId=${orderId}`);
-    }, 1000);
+    clearCart();
+    router.push(`/order-success?orderId=${orderId}`);
   };
 
   return (
@@ -137,9 +193,19 @@ export default function CheckoutPage() {
           Delivery &amp; Consecration Details
         </h1>
         <p className="text-xs text-temple-500 mt-1">
-          Review your ritual items and specify delivery preferences.
+          Review your ritual items and specify authentic delivery preferences.
         </p>
       </div>
+
+      {submitError && (
+        <div className="p-4 rounded-2xl bg-vermillion-50 border border-vermillion-200 text-vermillion-800 text-xs flex items-center space-x-3">
+          <AlertCircle className="w-5 h-5 flex-shrink-0 text-vermillion-600" />
+          <div>
+            <span className="font-bold block">Order Submission Error</span>
+            <span>{submitError}</span>
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left: Customer & Address Form */}
@@ -161,7 +227,7 @@ export default function CheckoutPage() {
                   className={`w-full px-4 py-3 rounded-xl border text-xs text-temple-900 focus:outline-none focus:ring-2 ${
                     errors.name ? 'border-vermillion-500 ring-vermillion-200' : 'border-sandalwood-300 focus:ring-brass-400'
                   }`}
-                  placeholder="e.g. Suresh Raghavan"
+                  placeholder="Enter full name"
                 />
                 {errors.name && <p className="text-[11px] text-vermillion-600">{errors.name}</p>}
               </div>
@@ -177,7 +243,7 @@ export default function CheckoutPage() {
                   className={`w-full px-4 py-3 rounded-xl border text-xs text-temple-900 focus:outline-none focus:ring-2 ${
                     errors.phone ? 'border-vermillion-500 ring-vermillion-200' : 'border-sandalwood-300 focus:ring-brass-400'
                   }`}
-                  placeholder="e.g. 98450 12345"
+                  placeholder="10-digit mobile number"
                 />
                 {errors.phone && <p className="text-[11px] text-vermillion-600">{errors.phone}</p>}
               </div>
@@ -193,7 +259,7 @@ export default function CheckoutPage() {
                   className={`w-full px-4 py-3 rounded-xl border text-xs text-temple-900 focus:outline-none focus:ring-2 ${
                     errors.email ? 'border-vermillion-500 ring-vermillion-200' : 'border-sandalwood-300 focus:ring-brass-400'
                   }`}
-                  placeholder="e.g. suresh@example.com"
+                  placeholder="name@example.com"
                 />
                 {errors.email && <p className="text-[11px] text-vermillion-600">{errors.email}</p>}
               </div>
@@ -233,7 +299,7 @@ export default function CheckoutPage() {
                   className={`w-full px-4 py-3 rounded-xl border text-xs text-temple-900 focus:outline-none focus:ring-2 ${
                     errors.city ? 'border-vermillion-500 ring-vermillion-200' : 'border-sandalwood-300 focus:ring-brass-400'
                   }`}
-                  placeholder="e.g. Bengaluru / Chennai / Hyderabad"
+                  placeholder="e.g. Bengaluru, Chennai, Hyderabad"
                 />
                 {errors.city && <p className="text-[11px] text-vermillion-600">{errors.city}</p>}
               </div>
@@ -249,7 +315,7 @@ export default function CheckoutPage() {
                   className={`w-full px-4 py-3 rounded-xl border text-xs text-temple-900 focus:outline-none focus:ring-2 ${
                     errors.pincode ? 'border-vermillion-500 ring-vermillion-200' : 'border-sandalwood-300 focus:ring-brass-400'
                   }`}
-                  placeholder="e.g. 560038"
+                  placeholder="6-digit pincode"
                 />
                 {errors.pincode && <p className="text-[11px] text-vermillion-600">{errors.pincode}</p>}
               </div>
@@ -342,10 +408,14 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-4 rounded-xl bg-temple-900 hover:bg-temple-800 disabled:bg-temple-600 text-sandalwood-50 font-bold text-xs flex items-center justify-center space-x-2 shadow-temple transition-all"
+            className="w-full py-4 rounded-xl bg-temple-900 hover:bg-temple-800 disabled:opacity-50 text-sandalwood-50 font-bold text-xs flex items-center justify-center space-x-2 shadow-temple transition-all cursor-pointer"
           >
-            <ShieldCheck className="w-4 h-4 text-brass-400" />
-            <span>{isSubmitting ? 'Submitting...' : 'Submit Order Request'}</span>
+            {isSubmitting ? (
+              <div className="w-4 h-4 border-2 border-sandalwood-50 border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <ShieldCheck className="w-4 h-4 text-brass-400" />
+            )}
+            <span>{isSubmitting ? 'Persisting Order...' : 'Submit Order Request'}</span>
             {!isSubmitting && <ArrowRight className="w-4 h-4" />}
           </button>
 

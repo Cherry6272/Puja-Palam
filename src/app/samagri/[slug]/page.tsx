@@ -22,9 +22,14 @@ export default function ProductDetailPage() {
   const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA, isLoading } = useDataStore();
 
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = params?.slug as string;
   const router = useRouter();
   const { addProduct } = useCart();
+
+  const [quantity, setQuantity] = useState(1);
+  const [isAdded, setIsAdded] = useState(false);
+
+  const product = SAMAGRI_PRODUCTS.find((p) => p.slug === slug || p.id === slug);
 
   if (isLoading) {
     return (
@@ -34,13 +39,9 @@ export default function ProductDetailPage() {
     );
   }
 
-  const product = SAMAGRI_PRODUCTS.find((p) => p.slug === slug || p.id === slug);
   if (!product) {
     return notFound();
   }
-
-  const [quantity, setQuantity] = useState(1);
-  const [isAdded, setIsAdded] = useState(false);
 
   // Related rituals where this item is used
   const relatedRituals = RITUALS_DATA.filter((r) =>

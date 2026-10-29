@@ -20,9 +20,14 @@ export default function KitDetailPage() {
   const { products: SAMAGRI_PRODUCTS, rituals: RITUALS_DATA, festivals: FESTIVALS_DATA, isLoading } = useDataStore();
 
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = params?.slug as string;
   const router = useRouter();
   const { addCustomizedKit } = useCart();
+  const [selectedTierKey, setSelectedTierKey] = useState<'essential' | 'complete' | 'premium'>('complete');
+
+  // Look up by exact slug or with '-kit' stripped
+  const cleanedSlug = slug ? slug.replace(/-kit$/, '') : '';
+  const ritual = RITUALS_DATA.find((r) => r.slug === slug || r.slug === cleanedSlug);
 
   if (isLoading) {
     return (
@@ -32,15 +37,11 @@ export default function KitDetailPage() {
     );
   }
 
-  // Look up by exact slug or with '-kit' stripped
-  const cleanedSlug = slug.replace(/-kit$/, '');
-  const ritual = RITUALS_DATA.find((r) => r.slug === slug || r.slug === cleanedSlug);
   if (!ritual) {
     return notFound();
   }
 
-  const [selectedTierKey, setSelectedTierKey] = useState<'essential' | 'complete' | 'premium'>('complete');
-  const activeTier = ritual.tiers[selectedTierKey];
+  const activeTier = ritual.tiers[selectedTierKey] || ritual.tiers.complete || ritual.tiers.essential;
 
   const handleQuickAdd = () => {
     addCustomizedKit({

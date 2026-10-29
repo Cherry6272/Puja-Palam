@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AdminLayout } from '@/components/admin/AdminLayout';
-import { dataStore } from '@/lib/dataStore';
 import { 
   Package, 
   ShoppingBag, 
@@ -16,26 +15,16 @@ import {
   Calendar,
   Layers,
   MapPin,
-  RefreshCw
+  RefreshCw,
+  Database,
+  AlertCircle
 } from 'lucide-react';
 
 import { useDataStore } from '@/hooks/useDataStore';
 
 export default function AdminDashboardPage() {
-  const { isLoading } = useDataStore();
-  const [stats, setStats] = useState(() => dataStore.getOperationalStats());
-  const [recentOrders, setRecentOrders] = useState(() => dataStore.getOrders().slice(0, 5));
-
-  const refreshData = () => {
-    setStats(dataStore.getOperationalStats());
-    setRecentOrders(dataStore.getOrders().slice(0, 5));
-  };
-
-  useEffect(() => {
-    if (!isLoading) {
-      refreshData();
-    }
-  }, [isLoading]);
+  const { stats, orders, isLoading, error, dbStatus, refetch } = useDataStore();
+  const recentOrders = orders.slice(0, 5);
 
   return (
     <AdminLayout>
@@ -48,24 +37,43 @@ export default function AdminDashboardPage() {
                 Live Operations Center
               </span>
               <span className="text-xs text-brass-300">Hubs: Bengaluru • Chennai • Hyderabad</span>
+              {dbStatus && (
+                <span className={`text-[10px] px-2 py-0.5 rounded font-semibold border ${
+                  dbStatus.storageType === 'postgresql'
+                    ? 'bg-tulsi-950/80 text-tulsi-300 border-tulsi-600'
+                    : 'bg-amber-950/80 text-amber-300 border-amber-600'
+                }`}>
+                  {dbStatus.storageType === 'postgresql' ? 'PostgreSQL Connected' : 'Local File Persistence'}
+                </span>
+              )}
             </div>
             <h1 className="font-serif-title text-2xl sm:text-3xl font-bold text-sandalwood-50">
               Operations &amp; Ritual Logistics
             </h1>
             <p className="text-xs text-sandalwood-300">
-              Real-time multi-hub inventory, customer procurement orders, and 4-box packing pipeline.
+              {dbStatus?.message || 'Real-time multi-hub inventory, customer procurement orders, and 4-box packing pipeline.'}
             </p>
           </div>
 
           <button
             type="button"
-            onClick={refreshData}
-            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-temple-800 hover:bg-temple-700 text-xs font-semibold text-brass-300 border border-brass-700/40 transition-colors self-start md:self-auto"
+            onClick={() => refetch()}
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-temple-800 hover:bg-temple-700 text-xs font-semibold text-brass-300 border border-brass-700/40 transition-colors self-start md:self-auto cursor-pointer"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>Refresh Metrics</span>
           </button>
         </div>
+
+        {error && (
+          <div className="p-4 rounded-2xl bg-vermillion-50 border border-vermillion-200 text-vermillion-800 text-xs flex items-center space-x-3">
+            <AlertCircle className="w-5 h-5 flex-shrink-0 text-vermillion-600" />
+            <div>
+              <span className="font-bold block">Database / API Error</span>
+              <span>{error}</span>
+            </div>
+          </div>
+        )}
 
         {/* Real Operational Metrics Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

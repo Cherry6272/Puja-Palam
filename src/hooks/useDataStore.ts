@@ -1,29 +1,68 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { dataStore } from '@/lib/dataStore';
-import { SAMAGRI_PRODUCTS } from '@/data/products';
-import { RITUALS_DATA } from '@/data/rituals';
-import { FESTIVALS_DATA } from '@/data/festivals';
+
+import { useState, useEffect, useCallback } from 'react';
+import { dataStore, CustomerSummary, OperationalStats } from '@/lib/dataStore';
+import { SamagriProduct, Ritual, Festival, PlacedOrder } from '@/types';
 
 export function useDataStore() {
-  const [products, setProducts] = useState<typeof SAMAGRI_PRODUCTS>([]);
-  const [rituals, setRituals] = useState<typeof RITUALS_DATA>([]);
-  const [festivals, setFestivals] = useState<typeof FESTIVALS_DATA>([]);
-  const [orders, setOrders] = useState<ReturnType<typeof dataStore.getOrders>>([]);
-  const [customers, setCustomers] = useState<ReturnType<typeof dataStore.getCustomers>>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState<SamagriProduct[]>(() => dataStore.getProducts());
+  const [rituals, setRituals] = useState<Ritual[]>(() => dataStore.getRituals());
+  const [festivals, setFestivals] = useState<Festival[]>(() => dataStore.getFestivals());
+  const [orders, setOrders] = useState<PlacedOrder[]>(() => dataStore.getOrders());
+  const [customers, setCustomers] = useState<CustomerSummary[]>(() => dataStore.getCustomers());
+  const [stats, setStats] = useState<OperationalStats>(() => dataStore.getOperationalStats());
+  const [dbStatus, setDbStatus] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(() => dataStore.getProducts().length === 0);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadData = useCallback(async () => {
+    // Only set loading if data is not already populated
+    if (dataStore.getProducts().length === 0) {
+      setIsLoading(true);
+    }
+    setError(null);
     try {
-      setProducts(dataStore.getProducts());
-      setRituals(dataStore.getRituals());
-      setFestivals(dataStore.getFestivals());
-      setOrders(dataStore.getOrders());
-      setCustomers(dataStore.getCustomers());
+      const res = await dataStore.fetchLatest();
+      setProducts(res.products);
+      setRituals(res.rituals);
+      setFestivals(res.festivals);
+      setOrders(res.orders);
+      setCustomers(res.customers);
+      setStats(res.stats);
+      setDbStatus(res.dbStatus);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to connect to data service.');
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  return { products, rituals, festivals, orders, customers, isLoading };
+  useEffect(() => {
+    loadData();
+
+    // Subscribe to synchronous store changes (optimistic updates, local mutations)
+    const unsubscribe = dataStore.subscribe(() => {
+      setProducts([...dataStore.getProducts()]);
+      setRituals([...dataStore.getRituals()]);
+      setFestivals([...dataStore.getFestivals()]);
+      setOrders([...dataStore.getOrders()]);
+      setCustomers([...dataStore.getCustomers()]);
+      setStats({ ...dataStore.getOperationalStats() });
+    });
+
+    return unsubscribe;
+  }, [loadData]);
+
+  return {
+    products,
+    rituals,
+    festivals,
+    orders,
+    customers,
+    stats,
+    dbStatus,
+    isLoading,
+    error,
+    refetch: loadData,
+  };
 }

@@ -1,26 +1,84 @@
 'use server';
 
+import crypto from 'crypto';
 import { cookies } from 'next/headers';
+import {
+  getAdminAuthConfig,
+  createAdminSessionToken,
+  verifyAdminSessionToken,
+  setAdminSessionCookie,
+  clearAdminSessionCookie,
+} from '@/lib/server/auth';
 
-export async function loginAdmin(password: string) {
-  // In a real application, this would check a database hash.
-  // For the MVP, we use an environment variable (not exposed to the client).
-  // IMPORTANT: Set ADMIN_PASSWORD in your production environment variables.
-  const correctPassword = process.env.ADMIN_PASSWORD || 'samptrapthi2026';
+export async function loginAdmin(formData: { email?: string; password?: string }) {
+  const { email: envEmail, password: envPassword, secret, isConfigured } = getAdminAuthConfig();
 
-  if (password === correctPassword) {
-    cookies().set('pk_admin_session', 'authenticated', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24, // 24 hours
-      path: '/',
-    });
-    return { success: true };
+  if (!isConfigured || !envEmail || !envPassword || !secret) {
+    return {
+      success: false,
+      error: 'Server authentication is not configured. Missing required ADMIN_EMAIL, ADMIN_PASSWORD, or ADMIN_SESSION_SECRET environment variables.',
+      isConfigurationError: true,
+    };
   }
 
-  return { success: false, error: 'Invalid admin password.' };
+  const inputEmail = (formData.email || '').trim().toLowerCase();
+  const inputPassword = formData.password || '';
+
+  if (!inputEmail || !inputPassword) {
+    return {
+      success: false,
+      error: 'Please enter both admin email and password.',
+    };
+  }
+
+  // Constant-time comparison for password and email
+  const targetEmail = envEmail.trim().toLowerCase();
+  const emailBuffer = Buffer.from(inputEmail);
+  const targetEmailBuffer = Buffer.from(targetEmail);
+  const isEmailMatch =
+    emailBuffer.length === targetEmailBuffer.length &&
+    crypto.timingSafeEqual(emailBuffer, targetEmailBuffer);
+
+  const passBuffer = Buffer.from(inputPassword);
+  const targetPassBuffer = Buffer.from(envPassword);
+  const isPasswordMatch =
+    passBuffer.length === targetPassBuffer.length &&
+    crypto.timingSafeEqual(passBuffer, targetPassBuffer);
+
+  if (!isEmailMatch || !isPasswordMatch) {
+    return {
+      success: false,
+      error: 'Invalid admin credentials.',
+    };
+  }
+
+  // Generate signed expiring session token
+  const token = await createAdminSessionToken(inputEmail, secret);
+  await setAdminSessionCookie(token);
+
+  return { success: true };
 }
 
 export async function logoutAdmin() {
-  cookies().delete('pk_admin_session');
+  await clearAdminSessionCookie();
+  return { success: true };
+}
+
+export async function verifyAdminSession() {
+  const { secret, isConfigured } = getAdminAuthConfig();
+  if (!isConfigured || !secret) {
+    return { authenticated: false, isConfigured: false };
+  }
+
+  const token = cookies().get('pk_admin_session')?.value;
+  if (!token) {
+    return { authenticated: false, isConfigured: true };
+  }
+
+  const verification = await verifyAdminSessionToken(token, secret);
+  return {
+    authenticated: verification.valid,
+    email: verification.payload?.email,
+    isConfigured: true,
+  };
 }

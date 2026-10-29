@@ -1,32 +1,47 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { loginAdmin } from '@/app/actions/auth';
-import { ShieldCheck, Flower2, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
+import { Flower2, Lock, Mail, AlertCircle, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 
-export default function AdminLoginPage() {
+function AdminLoginContent() {
   const router = useRouter();
-  const [email, setEmail] = useState('admin@samptrapthi.com');
+  const searchParams = useSearchParams();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isConfigError, setIsConfigError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Middleware handles redirection if already authenticated
-  }, []);
+    if (searchParams.get('error') === 'config_missing') {
+      setIsConfigError(true);
+      setError('Admin authentication is not configured on the server. Please set ADMIN_EMAIL, ADMIN_PASSWORD, and ADMIN_SESSION_SECRET in environment variables.');
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsConfigError(false);
     setIsLoading(true);
 
-    const res = await loginAdmin(password);
-    if (res.success) {
-      router.replace('/admin');
-    } else {
-      setError(res.error || 'Authentication failed. Please verify credentials.');
+    try {
+      const res = await loginAdmin({ email, password });
+      if (res.success) {
+        const destination = searchParams.get('from') || '/admin';
+        router.replace(destination);
+      } else {
+        if (res.isConfigurationError) {
+          setIsConfigError(true);
+        }
+        setError(res.error || 'Authentication failed. Please verify credentials.');
+        setIsLoading(false);
+      }
+    } catch {
+      setError('Network or server error during authentication.');
       setIsLoading(false);
     }
   };
@@ -55,14 +70,29 @@ export default function AdminLoginPage() {
               Admin Authentication
             </h3>
             <p className="text-xs text-sandalwood-400">
-              Enter your authorized operational credentials to manage orders, inventory, and rituals.
+              Enter authorized operational credentials to manage orders, inventory, and rituals.
             </p>
           </div>
 
           {error && (
-            <div className="p-3 rounded-xl bg-vermillion-950/80 border border-vermillion-700 text-vermillion-200 text-xs flex items-center space-x-2">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 text-vermillion-400" />
-              <span>{error}</span>
+            <div
+              className={`p-3.5 rounded-xl border text-xs flex items-start space-x-2.5 ${
+                isConfigError
+                  ? 'bg-amber-950/80 border-amber-600 text-amber-200'
+                  : 'bg-vermillion-950/80 border-vermillion-700 text-vermillion-200'
+              }`}
+            >
+              {isConfigError ? (
+                <ShieldAlert className="w-4 h-4 flex-shrink-0 text-amber-400 mt-0.5" />
+              ) : (
+                <AlertCircle className="w-4 h-4 flex-shrink-0 text-vermillion-400 mt-0.5" />
+              )}
+              <div className="space-y-1">
+                <span className="font-semibold block">
+                  {isConfigError ? 'Server Configuration Required' : 'Authentication Error'}
+                </span>
+                <span className="block leading-relaxed">{error}</span>
+              </div>
             </div>
           )}
 
@@ -81,6 +111,7 @@ export default function AdminLoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@samptrapthi.com"
                   required
+                  autoComplete="email"
                   className="w-full pl-10 pr-4 py-3 rounded-xl bg-temple-950 border border-temple-700 text-sandalwood-100 text-sm placeholder:text-temple-500 focus:outline-none focus:ring-2 focus:ring-brass-500 focus:border-transparent transition-all"
                 />
               </div>
@@ -98,37 +129,45 @@ export default function AdminLoginPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
+                  placeholder="Enter authorized password"
                   required
+                  autoComplete="current-password"
                   className="w-full pl-10 pr-4 py-3 rounded-xl bg-temple-950 border border-temple-700 text-sandalwood-100 text-sm placeholder:text-temple-500 focus:outline-none focus:ring-2 focus:ring-brass-500 focus:border-transparent transition-all"
                 />
               </div>
-              <p className="text-[11px] text-temple-400 mt-1">
-                Authorized operational credentials required.
-              </p>
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-brass-600 to-brass-500 hover:from-brass-500 hover:to-brass-400 text-temple-950 font-bold text-sm tracking-wide flex items-center justify-center space-x-2 shadow-brass transition-all active:scale-98 disabled:opacity-50"
+              className="w-full py-3.5 rounded-xl bg-brass-500 hover:bg-brass-600 disabled:opacity-50 text-temple-950 font-bold text-xs flex items-center justify-center space-x-2 shadow-brass transition-all mt-2 cursor-pointer"
             >
-              <ShieldCheck className="w-4 h-4" />
-              <span>{isLoading ? 'Verifying Access...' : 'Enter Admin Console'}</span>
-              {!isLoading && <ArrowRight className="w-4 h-4" />}
+              {isLoading ? (
+                <div className="w-4 h-4 border-2 border-temple-950 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <span>Authenticate &amp; Access Console</span>
+              )}
             </button>
           </form>
 
-          <div className="pt-4 border-t border-temple-800 text-center">
+          <div className="text-center pt-2">
             <Link
               href="/"
-              className="text-xs text-sandalwood-400 hover:text-brass-300 transition-colors inline-flex items-center space-x-1"
+              className="text-xs text-sandalwood-400 hover:text-brass-300 transition-colors"
             >
-              <span>← Return to Customer Storefront</span>
+              &larr; Return to Storefront
             </Link>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-temple-950" />}>
+      <AdminLoginContent />
+    </Suspense>
   );
 }
